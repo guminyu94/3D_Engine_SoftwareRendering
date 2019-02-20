@@ -20,6 +20,7 @@
 ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "Mat3.h"
 
 Game::Game( MainWindow& wnd )
 	:
@@ -38,6 +39,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	_Mat3<float> matz30 = _Mat3<float>::RotationZ(30/180*3.1415926);
 
 }
 
