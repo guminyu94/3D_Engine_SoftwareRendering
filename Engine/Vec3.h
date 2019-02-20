@@ -181,6 +181,6 @@ public:
 	T z;
 };
 
-typedef _Vec3<float> Vec2;
-typedef _Vec3<double> Ved2;
-typedef _Vec3<int> Vei2;
+typedef _Vec3<float> Vec3;
+typedef _Vec3<double> Ved3;
+typedef _Vec3<int> Vei3;
