@@ -69,6 +69,7 @@ public:
 	{
 		sysBuffer.PutPixel( x,y,c );
 	}
+	void DrawSprite(int x,int y,const Surface & s)
 	~Graphics();
 private:
 	GDIPlusManager										gdipMan;
