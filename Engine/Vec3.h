@@ -175,6 +175,7 @@ public:
 	{
 		return !(*this == rhs);
 	}
+
 public:
 	T x;
 	T y;
