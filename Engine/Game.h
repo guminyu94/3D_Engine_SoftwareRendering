@@ -21,6 +21,9 @@
 #pragma once
 
 #include "Graphics.h"
+#include "box.h"
+#include "ScreenTransform.h"
+#include "FrameMath.h"
 
 class Game
 {
@@ -40,5 +43,11 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	box box_1;
+	ScreenTransformer s_trans;
+	static constexpr float dTheta = PI;
+	float theta_x = 0.0f;
+	float theta_y = 0.0f;
+	float theta_z = 0.0f;
 	/********************************/
 };

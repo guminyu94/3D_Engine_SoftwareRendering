@@ -111,6 +111,7 @@ public:
 			(T)0.0, cosTheta, sinTheta,
 			(T)0.0,-sinTheta, cosTheta,
 		};
+	}
 
 	static _Mat3 Scaling(T factor)
 	{
@@ -125,7 +126,6 @@ public:
 	// [ row ][ col ]
 	T elements[3][3];
 };
-
 template<typename T>
 _Vec3<T>& operator*=(_Vec3<T>& lhs, const _Mat3<T>& rhs)
 {

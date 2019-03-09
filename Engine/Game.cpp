@@ -21,11 +21,15 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "Mat3.h"
+#include <windows.h>
+#include <string>
+
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	box_1(1.0f)
 {
 }
 
@@ -39,11 +43,70 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	_Mat3<float> matz30 = _Mat3<float>::RotationZ(30/180*3.1415926);
+	const float dt = 1.0f / 60.0f;
+	if (wnd.kbd.KeyIsPressed('Q'))
+	{
+		theta_x += dTheta * dt;
+	}
+	if (wnd.kbd.KeyIsPressed('W'))
+	{
+		theta_y += dTheta * dt;
+	}
+	if (wnd.kbd.KeyIsPressed('E'))
+	{
+		theta_z += dTheta * dt;
+	}
+	if (wnd.kbd.KeyIsPressed('A'))
+	{
+		theta_x -= dTheta * dt;
+	}
+	if (wnd.kbd.KeyIsPressed('S'))
+	{
+		theta_y -= dTheta * dt;
+	}
+	if (wnd.kbd.KeyIsPressed('D'))
+	{
+		theta_z -= dTheta * dt;
+	}
+
 
 }
 
 void Game::ComposeFrame()
 {
-	
+	float offset_z = 5;
+	// set up the rot matrix
+	auto rotxMat = _Mat3<float>::RotationX(theta_x);
+	auto rotyMat = _Mat3<float>::RotationY(theta_y);
+	auto rotzMat = _Mat3<float>::RotationZ(theta_z);
+	auto rotMat = rotxMat * rotyMat * rotzMat;
+	// get the line and vertices list
+	IndexedLineList box_1_vl_list = box_1.getLineVertexIndexList();
+	// rot the vertices, z offset, and screen transform
+	for (auto & vec : box_1_vl_list.vertex)
+	{
+		 vec *= rotMat;
+		 vec += {0.0f, 0.0f, offset_z};
+		 s_trans.Transform(vec);
+	}
+
+	// test the draw line
+	gfx.DrawLine(100.0f, 0.0f, 110.0f, 0.0f, Colors::Green);
+
+	// get the line and vertices list
+	for (int i = 0; i < (std::end(box_1_vl_list.nodesList) - std::begin(box_1_vl_list.nodesList)) - 1; i = i + 2)
+	{
+		// debug window, print the line's index  
+		//std::string string_debug = "First Index: "+ std::to_string(box_1_vl_list.nodesList[i]) + " \n"+ "Second Index: " + std::to_string(box_1_vl_list.nodesList[i+1]) 
+		//	+ " \n"+"\0";
+		std::wstring w_string_debug;
+		std::string string_debug = "Line Index: " + std::to_string(i/2) + " \n" + "\0";
+		w_string_debug.assign(string_debug.begin(), string_debug.end());
+		OutputDebugString(w_string_debug.c_str());
+		// draw the lines
+		auto x1 = box_1_vl_list.vertex[box_1_vl_list.nodesList[i]].x;
+		auto x2 = box_1_vl_list.vertex[box_1_vl_list.nodesList[i+1]].x;
+		gfx.DrawLine(box_1_vl_list.vertex[box_1_vl_list.nodesList[i]], box_1_vl_list.vertex[box_1_vl_list.nodesList[i + 1]], Colors::White);
+	}
+
 }

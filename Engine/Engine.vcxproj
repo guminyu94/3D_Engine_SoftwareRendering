@@ -138,7 +138,8 @@
   <ItemGroup>
     <ClInclude Include="box.h" />
     <ClInclude Include="ChiliException.h" />
-    <ClInclude Include="Math.h" />
+    <ClInclude Include="VertexIndexList.h" />
+    <ClInclude Include="FrameMath.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="DXErr.h" />
@@ -152,11 +153,13 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ScreenTransform.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="box.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
