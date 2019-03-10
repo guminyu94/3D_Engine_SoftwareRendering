@@ -74,6 +74,9 @@ public:
 	{
 		sysBuffer.PutPixel( x,y,c );
 	}
+	void DrawTriangle(const Vec3 & v1, const Vec3 & v2,const Vec3 & v3, Color c);
+	void DrawUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c);
+	void DrawLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c);
 	~Graphics();
 private:
 	GDIPlusManager										gdipMan;

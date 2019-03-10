@@ -26,6 +26,8 @@
 #include <string>
 #include <array>
 #include <functional>
+#include "FrameMath.h"
+
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -381,3 +383,62 @@ void Graphics::DrawLine( float x1,float y1,float x2,float y2,Color c )
 		}
 	}
 }
+
+void Graphics::DrawTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c)
+{
+	// get the pointer of vec3
+	auto * v1_p = &v1;
+	auto * v2_p = &v2;
+	auto * v3_p = &v3;
+	// sort the nodes of 3 vectors based on the y
+	if (v1_p->y > v2_p->y)
+	{
+		std::swap(v1_p, v2_p);
+	}
+	if (v2_p->y > v3_p->y)
+	{
+		std::swap(v2_p, v3_p);
+	}
+	if (v1_p->y > v2_p->y)
+	{
+		std::swap(v1_p, v2_p);
+	}
+
+	// if the triangle is a upper case
+	if (v2_p->y == v3_p->y)
+	{
+		DrawUpperTriangle(*v1_p, *v2_p, *v3_p, c);
+	}
+	// lower case
+	else if (v1_p->y == v2_p->y)
+	{
+		DrawLowerTriangle(*v1_p,*v2_p, *v3_p, c);
+	}
+	// general case
+	else
+	{
+		Vec3 Intercept = { linearInterpolation(v1_p->y,v1_p->x,v3_p->y,v3_p->x,v2_p->y),v2_p->y,0 };
+
+		DrawUpperTriangle(*v1_p, *v2_p, Intercept, c);
+		DrawLowerTriangle(*v2_p, Intercept, *v3_p, c);
+	}
+
+}
+
+void Graphics::DrawUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c)
+{
+	// draw the line 
+	for (float i = v1.y; i <= v2.y; i++)
+	{
+		DrawLine(linearInterpolation(v1.y,v1.x,v2.y,v2.x,i), i,linearInterpolation(v1.y, v1.x, v3.y, v3.x, i),i,c);
+	}
+}
+
+void Graphics::DrawLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c)
+{
+	for (float i = v3.y; i >= v2.y; i--)
+	{
+		DrawLine(linearInterpolation(v1.y, v1.x, v3.y, v3.x, i), i, linearInterpolation(v2.y, v2.x, v3.y, v3.x, i), i, c);
+	}
+}
+

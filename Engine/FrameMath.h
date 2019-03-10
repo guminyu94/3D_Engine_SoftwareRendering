@@ -29,3 +29,11 @@ inline auto sq( const T& x )
 {
 	return x * x;
 }
+
+template <typename T>
+inline auto linearInterpolation(const T& x1,const T& y1,const T& x2,const T& y2,const T& x3) 
+{
+	T slope = (y2 - y1) / (x2 - x1);;
+	T y3 = y1+(x3-x1)*slope;
+	return y3;
+}
