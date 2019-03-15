@@ -175,6 +175,18 @@ public:
 	{
 		return !(*this == rhs);
 	}
+	
+	// cross produect
+	_Vec3 operator %(const _Vec3 &rhs) const {
+		return { (y*rhs.z - z * rhs.y),(z*rhs.x - x * rhs.z),(x*rhs.y - y * rhs.x) };
+	}
+
+	_Vec3& operator %=(const _Vec3 &rhs) const {
+		x = (y*rhs.z - z * rhs.y);
+		y = (z*rhs.x - x * rhs.z);
+		z = (x*rhs.y - y * rhs.x);
+		return this
+	}
 
 public:
 	T x;

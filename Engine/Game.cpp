@@ -23,13 +23,15 @@
 #include "Mat3.h"
 #include <windows.h>
 #include <string>
+#include "JPG2Vector.h"
 
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	box_1(1.0f)
+	box_1(1.0f),
+	box_tex("aa322ca2a52f3192b09a650e8eb4c8e0.jpg")
 {
 }
 
@@ -86,6 +88,7 @@ void Game::ComposeFrame()
 	auto rotyMat = _Mat3<float>::RotationY(theta_y);
 	auto rotzMat = _Mat3<float>::RotationZ(theta_z);
 	auto rotMat = rotxMat * rotyMat * rotzMat;
+	
 
 	/*
 	// get the line and vertices list
@@ -112,24 +115,62 @@ void Game::ComposeFrame()
 	}
 	*/
 
-	
+	/*
 	IndexedTriangleList box_1_vt_list = box_1.getTriangleVertexIndexList();
-	for (auto & vec : box_1_vt_list.vertex)
+	for (auto & vec : box_1_vt_list.verticesXY)
 	{
 		vec *= rotMat;
 		vec += {0.0f, 0.0f, offset_z};
-		s_trans.Transform(vec);
 	}
-	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
+	box_1_vt_list.checkCullFace();
+	for (auto & vec : box_1_vt_list.verticesXY)
 	{
-		// debugger output
-		std::wstring w_string_debug;
-		std::string string_debug = "Line Index(Triangle): " + std::to_string(i / 3) + " \n" + "\0";
-		w_string_debug.assign(string_debug.begin(), string_debug.end());
-		OutputDebugString(w_string_debug.c_str());
-		// draw the triangle
- 		gfx.DrawTriangle(box_1_vt_list.vertex[box_1_vt_list.nodesList[i]], box_1_vt_list.vertex[box_1_vt_list.nodesList[i + 1]], box_1_vt_list.vertex[box_1_vt_list.nodesList[i + 2]], Colors::White);
+		s_trans.Transform(vec);
 	}
 	
 
+	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
+	{
+		// debugger output
+		//std::wstring w_string_debug;
+		//std::string string_debug = "Line Index(Triangle): " + std::to_string(i / 3) + " \n" + "\0";
+		//w_string_debug.assign(string_debug.begin(), string_debug.end());
+		//OutputDebugString(w_string_debug.c_str());
+		// draw the triangle
+		if (box_1_vt_list.cull[i / 3])
+		{
+			gfx.DrawTriangle(box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 1]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 2]], colors_array[i / 3]);
+		}
+	}
+	*/
+	
+	
+	Vec3 v1 = {-1,-1,0};
+	Vec3 v2 = { 1.2,2.2,0 };
+	Vec3 v3 = { -2,1.4,0 };
+	v1 *= rotMat;
+	v2 *= rotMat;
+	v3 *= rotMat;
+	v1 += {0.0f, 0.0f, offset_z};
+	v2 += {0.0f, 0.0f, offset_z};
+	v3 += {0.0f, 0.0f, offset_z};
+	s_trans.Transform(v1);
+	s_trans.Transform(v2);
+	s_trans.Transform(v3);
+	Vec3 tv1 = { 20, 269, 0 };
+	Vec3 tv2 = { 20, 499, 0 };
+	Vec3 tv3 = { 250, 499, 0 };
+	box_tex.getPix(1, 1);
+	gfx.DrawTexTriangle(v1, v2, v3, tv1, tv2, tv3, box_tex);
+	
+
+	/*
+	int a = (int)4.99;
+	
+	*/
+
+	Color user_black(255u, 0u, 255u);
+	Color user_mag = Colors::Magenta;
+
+	system("pause");
 }

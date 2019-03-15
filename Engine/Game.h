@@ -41,6 +41,7 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	JPG2Vector box_tex;
 	/********************************/
 	/*  User Variables              */
 	box box_1;
@@ -50,5 +51,19 @@ private:
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
 	float offset_z = 3.0f;
+	const Color colors_array[12] = {
+		Colors::White,
+		Colors::Blue,
+		Colors::Cyan,
+		Colors::Gray,
+		Colors::Green,
+		Colors::Magenta,
+		Colors::LightGray,
+		Colors::Red,
+		Colors::Yellow,
+		Colors::White,
+		Colors::Blue,
+		Colors::Cyan
+	};
 	/********************************/
 };

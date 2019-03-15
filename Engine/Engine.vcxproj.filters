@@ -81,6 +81,12 @@
     <ClInclude Include="VertexIndexList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JPG2Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CImg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

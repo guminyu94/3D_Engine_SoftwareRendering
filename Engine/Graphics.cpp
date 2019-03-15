@@ -27,6 +27,8 @@
 #include <array>
 #include <functional>
 #include "FrameMath.h"
+#include <math.h>
+#include "box.h"
 
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
@@ -428,7 +430,7 @@ void Graphics::DrawTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, C
 void Graphics::DrawUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c)
 {
 	// draw the line 
-	for (float i = v1.y; i <= v2.y; i++)
+	for (float i = ceil(v1.y); i <= floor(v2.y); i++)
 	{
 		DrawLine(linearInterpolation(v1.y,v1.x,v2.y,v2.x,i), i,linearInterpolation(v1.y, v1.x, v3.y, v3.x, i),i,c);
 	}
@@ -436,9 +438,117 @@ void Graphics::DrawUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & 
 
 void Graphics::DrawLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c)
 {
-	for (float i = v3.y; i >= v2.y; i--)
+	for (float i = floor(v3.y); i >= ceil(v2.y); i--)
 	{
 		DrawLine(linearInterpolation(v1.y, v1.x, v3.y, v3.x, i), i, linearInterpolation(v2.y, v2.x, v3.y, v3.x, i), i, c);
 	}
 }
 
+void Graphics::DrawTexTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex)
+{
+	// get the pointer of vec3
+	auto * v1_p = &v1;
+	auto * v2_p = &v2;
+	auto * v3_p = &v3;
+	// get the pointer of texvec3
+	auto * tv1_p = &tv1;
+	auto * tv2_p = &tv2;
+	auto * tv3_p = &tv3;
+	// sort the nodes of 3 vectors based on the y
+	if (v1_p->y > v2_p->y)
+	{
+		std::swap(v1_p, v2_p);
+		std::swap(tv1_p, tv2_p);
+	}
+	if (v2_p->y > v3_p->y)
+	{
+		std::swap(v2_p, v3_p);
+		std::swap(tv2_p, tv3_p);
+	}
+	if (v1_p->y > v2_p->y)
+	{
+		std::swap(v1_p, v2_p);
+		std::swap(tv1_p, tv2_p);
+	}
+
+	// if the triangle is a upper case
+	if (v2_p->y == v3_p->y)
+	{
+		// make sure the 2th is on left
+		if (v2_p->x > v3_p->x)
+		{
+			std::swap(v2_p, v3_p);
+			std::swap(tv2_p, tv3_p);
+		}
+		DrawTexUpperTriangle(*v1_p, *v2_p, *v3_p, *tv1_p, *tv2_p, *tv3_p, tex);
+	}
+
+	// lower case
+	else if (v1_p->y == v2_p->y)
+	{
+		// make sure the 1th is on left
+		if (v1_p->x > v2_p->x)
+		{
+			std::swap(v1_p, v2_p);
+			std::swap(tv1_p, tv2_p);
+		}
+		//DrawLowerTexTriangle(*v1_p, *v2_p, *v3_p, *tv1_p, *tv2_p, *tv3_p, tex);
+	}
+
+	// general case
+	else
+	{
+		const Vec3 Intercept = { linearInterpolation(v1_p->y,v1_p->x,v3_p->y,v3_p->x,v2_p->y),v2_p->y,0 };
+		const Vec3 * Intercept_p = &Intercept;
+		// make sure the intercept point is on right
+		if (v2_p->x > Intercept_p->x)
+		{
+			std::swap(v2_p, Intercept_p);
+			std::swap(tv1_p, tv2_p);
+		}
+		DrawTexUpperTriangle(*v1_p, *v2_p, Intercept, *tv1_p, *tv2_p, *tv3_p, tex);
+		//DrawLowerTriangle(*v2_p, Intercept, *v3_p, c);
+		//DrawLowerTexTriangle(*v1_p, *v2_p, *v3_p, *tv1_p, *tv2_p, *tv3_p, tex);
+	}
+}
+
+void Graphics::DrawTexUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex)
+{
+	
+	float slope_1 = (v2.x -v1.x) / (v2.y - v1.y);
+	float slope_2 = (v3.x - v1.x) / (v3.y - v1.y);
+	float ratio_1 = (tv2.y - tv1.y) / (v2.y - v1.y);
+	float ratio_2 = (tv3.y - tv1.y) / (v3.y - v1.y);
+
+	for (float i = ceil(v1.y); i <= floor(v2.y); i++)
+	{
+		float x_1 = slope_1 * (i - v1.y) + v1.x;
+		float x_2 = slope_2 * (i - v1.y) + v1.x;
+		
+		float tex_point1_y = (i - v1.y) * ratio_1 + tv1.y;
+		float tex_point1_x = (i - v1.x) * ratio_1 + tv1.x;
+		float tex_point2_y = (i - v1.y) * ratio_2 + tv1.y;
+		float tex_point2_x = (i - v1.x) * ratio_2 + tv1.x;
+
+		float line_ratio = 0;
+		int tex_x = 0;
+		int tex_y = 0;
+
+		for (float j=ceil(x_1); j <= floor(x_2); j++)
+		{
+			line_ratio = (j - x_1) / (x_2 - x_1);
+			tex_x = ceil(line_ratio*(tex_point2_x - tex_point1_x) + tex_point1_x);
+			tex_y = ceil(line_ratio*(tex_point2_x - tex_point1_x) + tex_point1_x);
+			PutPixel((int)i, (int)j, tex.getPix( tex_x, tex_y)) ;
+		}
+		
+	}
+}
+
+void Graphics::DrawTexLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex)
+{
+	for (float i = floor(v3.y); i >= ceil(v2.y); i--)
+	{
+		//DrawLine(linearInterpolation(v1.y, v1.x, v3.y, v3.x, i), i, linearInterpolation(v2.y, v2.x, v3.y, v3.x, i), i, c);
+	}
+}

@@ -37,3 +37,10 @@ inline auto linearInterpolation(const T& x1,const T& y1,const T& x2,const T& y2,
 	T y3 = y1+(x3-x1)*slope;
 	return y3;
 }
+
+template <typename T>
+inline auto slope(const T& x1, const T& y1, const T& x2, const T& y2)
+{
+	T slope = (y2 - y1) / (x2 - x1);;
+	return slope;
+}
