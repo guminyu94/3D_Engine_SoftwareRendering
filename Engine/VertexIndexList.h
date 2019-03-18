@@ -30,8 +30,8 @@ struct IndexedTriangleList
 		for (int i = 0; i < 12; i++)
 		{
 			Vec3 tri_center = (verticesXY[nodesList[3 * i]] + verticesXY[nodesList[3 * i + 1]] + verticesXY[nodesList[3 * i + 2]]) / 3;
-			Vec3 tri_norm = (verticesXY[nodesList[3 * i + 2]] - verticesXY[nodesList[3 * i]]) % (verticesXY[nodesList[3 * i + 1]] - verticesXY[nodesList[3 * i]]);
-			if ((tri_center * tri_norm) >= 0)
+			Vec3 tri_norm = (verticesXY[nodesList[3 * i + 1]] - verticesXY[nodesList[3 * i]]) % (verticesXY[nodesList[3 * i + 2]] - verticesXY[nodesList[3 * i]]);
+			if ((tri_center * tri_norm) < 0)
 			{
 				cull[i]=true;
 			}
@@ -45,5 +45,4 @@ struct IndexedTriangleList
 	std::vector<Vec3> verticesXY;
 	std::vector<int> nodesList;
 	std::vector<bool> cull;
-	std::vector<Vec3> verticesUV;
 };

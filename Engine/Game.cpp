@@ -31,7 +31,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	box_1(1.0f),
-	box_tex("aa322ca2a52f3192b09a650e8eb4c8e0.jpg")
+	box_tex("aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg")
 {
 }
 
@@ -48,27 +48,27 @@ void Game::UpdateModel()
 	const float dt = 1.0f / 60.0f;
 	if (wnd.kbd.KeyIsPressed('Q'))
 	{
-		theta_x += dTheta * dt;
+		theta_x += dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
-		theta_y += dTheta * dt;
+		theta_y += dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('E'))
 	{
-		theta_z += dTheta * dt;
+		theta_z += dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('A'))
 	{
-		theta_x -= dTheta * dt;
+		theta_x -= dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('S'))
 	{
-		theta_y -= dTheta * dt;
+		theta_y -= dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('D'))
 	{
-		theta_z -= dTheta * dt;
+		theta_z -= dTheta * dt/2;
 	}
 	if (wnd.kbd.KeyIsPressed('F'))
 	{
@@ -143,11 +143,11 @@ void Game::ComposeFrame()
 		}
 	}
 	*/
-	
-	
-	Vec3 v1 = {-1,-1,0};
-	Vec3 v2 = { 1.2,2.2,0 };
-	Vec3 v3 = { -2,1.4,0 };
+
+	/*
+	Vec3 v1 = {0,0,0};
+	Vec3 v2 = { 0,1,0 };
+	Vec3 v3 = { 1,0,0 };
 	v1 *= rotMat;
 	v2 *= rotMat;
 	v3 *= rotMat;
@@ -157,20 +157,47 @@ void Game::ComposeFrame()
 	s_trans.Transform(v1);
 	s_trans.Transform(v2);
 	s_trans.Transform(v3);
-	Vec3 tv1 = { 20, 269, 0 };
-	Vec3 tv2 = { 20, 499, 0 };
+	Vec3 tv1 = { 20, 499, 0 };
+	Vec3 tv2 = { 20, 269, 0 };
 	Vec3 tv3 = { 250, 499, 0 };
-	box_tex.getPix(1, 1);
+	auto c1 = box_tex.getPix(363, 398);
+	auto c2 = box_tex.getPix(266, 138);
+	auto c3 = Colors::White;
 	gfx.DrawTexTriangle(v1, v2, v3, tv1, tv2, tv3, box_tex);
-	
-
-	/*
-	int a = (int)4.99;
-	
 	*/
 
-	Color user_black(255u, 0u, 255u);
-	Color user_mag = Colors::Magenta;
+	
+	// get the vec list and text list
+	IndexedTriangleList box_1_vt_list = box_1.getTriangleVertexIndexList();
+	IndexedTriangleList box_1_tex_vt_list = box_1.getTexTriangleVertexIndexList();
+	// rot the vec
+	for (auto & vec : box_1_vt_list.verticesXY)
+	{
+		vec *= rotMat;
+		vec += {0.0f, 0.0f, offset_z};
+	}
+	// check the face
+	box_1_vt_list.checkCullFace();
+	// transfer model to sceen space
+	for (auto & vec : box_1_vt_list.verticesXY)
+	{
+		s_trans.Transform(vec);
+	}
 
-	system("pause");
+	// draw the tex
+	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
+	{
+		if ( true)
+		{
+			if (box_1_vt_list.cull[i / 3])
+			{
+				gfx.DrawTexTriangle(box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 1]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 2]],
+					box_1_tex_vt_list.verticesXY[i], box_1_tex_vt_list.verticesXY[i + 1], box_1_tex_vt_list.verticesXY[i + 2], box_tex);
+			}
+		}
+		
+
+	}
+	
+
 }
