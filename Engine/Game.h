@@ -9,6 +9,7 @@
 #include "box.h"
 #include "ScreenTransform.h"
 #include "FrameMath.h"
+#include "Pipeline.h"
 
 class Game
 {
@@ -26,16 +27,17 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	JPG2Vector box_tex;
 	/********************************/
 	/*  User Variables              */
 	box box_1;
 	ScreenTransformer s_trans;
+	Pipeline pl;
+	IndexedTriangleList<Vertex>* box_vertexlist_ptr;
 	static constexpr float dTheta = PI;
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
-	float offset_z = 3.0f;
+	float offset_z = -3.0f;
 	const Color colors_array[12] = {
 		Colors::White,
 		Colors::Blue,

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <boost/gil/extension/io/jpeg_io.hpp>
 #include <string>
 #include <vector>

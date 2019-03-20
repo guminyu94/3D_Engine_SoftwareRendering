@@ -78,9 +78,6 @@ public:
 	void DrawTriangle(const Vec3 & v1, const Vec3 & v2,const Vec3 & v3, Color c);
 	void DrawUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c);
 	void DrawLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, Color c);
-	void DrawTexTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex);
-	void DrawTexUpperTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex);
-	void DrawTexLowerTriangle(const Vec3 & v1, const Vec3 & v2, const Vec3 & v3, const Vec3 & tv1, const Vec3 & tv2, const Vec3 & tv3, JPG2Vector & tex);
 
 	~Graphics();
 private:

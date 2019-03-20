@@ -26,14 +26,31 @@
 #include "JPG2Vector.h"
 
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	box_1(1.0f),
-	box_tex("aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg")
+	wnd(wnd),
+	gfx(wnd),
+	pl(gfx),
+	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2")
 {
-}
+	/*
+	Vec3 v1 = { 0,0,0 };
+	Vec3 v2 = { 1,0,0 };
+	Vec3 v3 = { 0,1,0 };
+	Vec3 tv1 = { 20, 499, 0 };
+	Vec3 tv2 = { 250, 499, 0 };
+	Vec3 tv3 = { 20, 269, 0 };
+	
+	std::vector<Vertex> tri_vert_list;
+	tri_vert_list.push_back({ v1,tv1 });
+	tri_vert_list.push_back({ v2,tv2 });
+	tri_vert_list.push_back({ v3,tv3 });
+	tri_vertexlist_ptr = new IndexedTriangleList<Vertex> (tri_vert_list, {0,1,2}, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg");
+	*/
+	box_vertexlist_ptr = box_1.getIndexedTriangleList();
+
+	
+};
 
 void Game::Go()
 {
@@ -82,13 +99,13 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	
+
 	// set up the rot matrix
 	auto rotxMat = _Mat3<float>::RotationX(theta_x);
 	auto rotyMat = _Mat3<float>::RotationY(theta_y);
 	auto rotzMat = _Mat3<float>::RotationZ(theta_z);
 	auto rotMat = rotxMat * rotyMat * rotzMat;
-	
+
 
 	/*
 	// get the line and vertices list
@@ -127,7 +144,7 @@ void Game::ComposeFrame()
 	{
 		s_trans.Transform(vec);
 	}
-	
+
 
 	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
 	{
@@ -143,61 +160,9 @@ void Game::ComposeFrame()
 		}
 	}
 	*/
-
-	/*
-	Vec3 v1 = {0,0,0};
-	Vec3 v2 = { 0,1,0 };
-	Vec3 v3 = { 1,0,0 };
-	v1 *= rotMat;
-	v2 *= rotMat;
-	v3 *= rotMat;
-	v1 += {0.0f, 0.0f, offset_z};
-	v2 += {0.0f, 0.0f, offset_z};
-	v3 += {0.0f, 0.0f, offset_z};
-	s_trans.Transform(v1);
-	s_trans.Transform(v2);
-	s_trans.Transform(v3);
-	Vec3 tv1 = { 20, 499, 0 };
-	Vec3 tv2 = { 20, 269, 0 };
-	Vec3 tv3 = { 250, 499, 0 };
-	auto c1 = box_tex.getPix(363, 398);
-	auto c2 = box_tex.getPix(266, 138);
-	auto c3 = Colors::White;
-	gfx.DrawTexTriangle(v1, v2, v3, tv1, tv2, tv3, box_tex);
-	*/
-
-	
-	// get the vec list and text list
-	IndexedTriangleList box_1_vt_list = box_1.getTriangleVertexIndexList();
-	IndexedTriangleList box_1_tex_vt_list = box_1.getTexTriangleVertexIndexList();
-	// rot the vec
-	for (auto & vec : box_1_vt_list.verticesXY)
-	{
-		vec *= rotMat;
-		vec += {0.0f, 0.0f, offset_z};
-	}
-	// check the face
-	box_1_vt_list.checkCullFace();
-	// transfer model to sceen space
-	for (auto & vec : box_1_vt_list.verticesXY)
-	{
-		s_trans.Transform(vec);
-	}
-
-	// draw the tex
-	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
-	{
-		if ( true)
-		{
-			if (box_1_vt_list.cull[i / 3])
-			{
-				gfx.DrawTexTriangle(box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 1]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 2]],
-					box_1_tex_vt_list.verticesXY[i], box_1_tex_vt_list.verticesXY[i + 1], box_1_tex_vt_list.verticesXY[i + 2], box_tex);
-			}
-		}
-		
-
-	}
-	
+	Vec3 tran_vec{ 0,0,offset_z };
+	pl.BindRotation(rotMat);
+	pl.BindTranslation(tran_vec);
+	pl.Draw(*box_vertexlist_ptr);
 
 }
