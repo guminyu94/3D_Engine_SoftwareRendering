@@ -55,19 +55,26 @@ private:
 	// triangle assembly function
 	// assembles indexed vertex stream into triangles and passes them to post process
 	// culls (does not send) back facing triangles
-	void AssembleTriangles(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices)
+	void AssembleTriangles(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 	{
 		// assemble triangles in the stream and process
-		for (size_t i = 0, end = indices.size() / 3;
+		for (unsigned int i = 0, end = indices.size()/3 ;
 			i < end; i++)
 		{
+			
 			// determine triangle vertices via indexing
-			const auto& v0 = vertices[indices[i * 3]];
-			const auto& v1 = vertices[indices[i * 3 + 1]];
-			const auto& v2 = vertices[indices[i * 3 + 2]];
-			// cull backfacing triangles with cross product (%) shenanigans
-			if ((v1.pos - v0.pos) % (v2.pos - v0.pos) * v0.pos <= 0.0f)
+			auto& v0 = vertices[i*3];
+			auto& v1 = vertices[i*3+1];
+			auto& v2 = vertices[i*3+2];
+			// cull backfacing triangles with cross product (%)
+			if ((((v1.pos - v0.pos) % (v2.pos - v0.pos)) * (v0.pos + v1.pos + v2.pos) / 3) < 0.0f)
 			{
+				int faceIndex = i;
+				// debugger output
+				std::wstring w_string_debug;
+				std::string string_debug = "Face Index(Triangle): " + std::to_string(faceIndex) + " \n" + "\0";
+				w_string_debug.assign(string_debug.begin(), string_debug.end());
+				OutputDebugString(w_string_debug.c_str());
 				// process 3 vertices into a triangle
 				ProcessTriangle(v0, v1, v2);
 			}

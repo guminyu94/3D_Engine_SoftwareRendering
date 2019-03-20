@@ -1,5 +1,7 @@
 // vertex type used for geometry and throughout pipeline
+#pragma once
 #include "Vec3.h"
+
 class Vertex
 {
 public:

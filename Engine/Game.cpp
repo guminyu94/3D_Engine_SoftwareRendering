@@ -31,7 +31,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	pl(gfx),
-	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2")
+	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg")
 {
 	/*
 	Vec3 v1 = { 0,0,0 };

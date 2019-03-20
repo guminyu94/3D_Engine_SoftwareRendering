@@ -7,7 +7,7 @@ template<class T>
 class IndexedTriangleList
 {
 public:
-	IndexedTriangleList(std::vector<T> verts_in, std::vector<size_t> indices_in,std::string filename)
+	IndexedTriangleList(std::vector<T> verts_in, std::vector<unsigned int> indices_in,std::string filename)
 		:
 		vertices(std::move(verts_in)),
 		indices(std::move(indices_in)),
@@ -17,6 +17,6 @@ public:
 		assert(indices.size() % 3 == 0);
 	}
 	std::vector<T> vertices;
-	std::vector<size_t> indices;
+	std::vector<unsigned int> indices;
 	JPG2Vector tex_img;
 };
