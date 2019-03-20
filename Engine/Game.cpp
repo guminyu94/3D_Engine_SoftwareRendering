@@ -65,27 +65,27 @@ void Game::UpdateModel()
 	const float dt = 1.0f / 60.0f;
 	if (wnd.kbd.KeyIsPressed('Q'))
 	{
-		theta_x += dTheta * dt/2;
+		theta_x += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
-		theta_y += dTheta * dt/2;
+		theta_y += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('E'))
 	{
-		theta_z += dTheta * dt/2;
+		theta_z += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('A'))
 	{
-		theta_x -= dTheta * dt/2;
+		theta_x -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('S'))
 	{
-		theta_y -= dTheta * dt/2;
+		theta_y -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('D'))
 	{
-		theta_z -= dTheta * dt/2;
+		theta_z -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('F'))
 	{

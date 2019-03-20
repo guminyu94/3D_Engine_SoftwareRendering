@@ -31,7 +31,7 @@ private:
 	/*  User Variables              */
 	box box_1;
 	ScreenTransformer s_trans;
-	Pipeline pl;
+	Pipeline<Effect> pl;
 	IndexedTriangleList<Vertex>* box_vertexlist_ptr;
 	static constexpr float dTheta = PI;
 	float theta_x = 0.0f;
