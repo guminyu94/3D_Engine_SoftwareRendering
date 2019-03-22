@@ -10,18 +10,18 @@
 class box
 {
 public:
-	box(const float & _length,std::string filename):
+	box(const float & _length,const std::string & filename,const float & _z_offset):
 		length(_length),
 		tex_img_filename(filename)
 	{
-		verticesXY.emplace_back(-length / 2,-length / 2,length / 2);
-		verticesXY.emplace_back(length / 2, -length / 2, length / 2);
-		verticesXY.emplace_back(length / 2, -length / 2, -length / 2);
-		verticesXY.emplace_back(-length / 2, -length / 2, -length / 2);
-		verticesXY.emplace_back(length / 2, length / 2, length / 2);
-		verticesXY.emplace_back(length / 2, length / 2, -length / 2);
-		verticesXY.emplace_back(-length / 2, length / 2, -length / 2);
-		verticesXY.emplace_back(-length / 2, length / 2, length / 2);
+		verticesXY.emplace_back(-length / 2,-length / 2,length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2, -length / 2, length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2, -length / 2, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2, -length / 2, -length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2, length / 2, length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2, length / 2, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2, length / 2, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2, length / 2, length / 2+ _z_offset);
 		
 		//0,1,4,0,4,7
 		verticesUV.emplace_back(20, 500, 0);
@@ -72,7 +72,7 @@ public:
 		verticesUV.emplace_back(250, 270, 0);
 	}
 
-	IndexedTriangleList<Vertex>* getIndexedTriangleList() const
+	std::unique_ptr<IndexedTriangleList<Vertex>> getIndexedTriangleList() const
 	{
 
 		std::vector<unsigned int> indices{ 0, 1, 4, 0, 4, 7,
@@ -92,8 +92,12 @@ public:
 			vertices.emplace_back(vert_temp);
 		}
 
-		return new IndexedTriangleList<Vertex>{ vertices,indices,tex_img_filename};
+		std::unique_ptr<IndexedTriangleList<Vertex>> boxList_ptr (new IndexedTriangleList<Vertex>{ vertices,indices,tex_img_filename });
+
+		return boxList_ptr;
+
 	};
+
 
 private:
 	float length;

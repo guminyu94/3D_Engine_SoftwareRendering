@@ -3,12 +3,21 @@
 #include "Colors.h"
 #include <string>
 #include "JPG2Vector.h"
+#include "DefaultVertexShader.h"
+#include "Vertex.h"
+#include "DefaultGeometryShader.h"
+
 class Effect
 {
 public:
+	typedef DefaultVertexShader<Vertex> VertexShader;
+	typedef DefaultGeometryShader<Vertex> GeometryShader;
+public:
 	class PixelShader
 	{
+		
 	public:
+		
 		Color operator()(int x, int y) const
 		{
 			return tex_img_ptr->getPix(x, y);
@@ -24,5 +33,7 @@ public:
 	};
 public:
 	PixelShader ps;
+	VertexShader dvs;
+	GeometryShader gs;
 };
 

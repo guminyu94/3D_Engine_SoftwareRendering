@@ -157,11 +157,14 @@
     <ClInclude Include="box.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="CImg.h" />
+    <ClInclude Include="DefaultGeometryShader.h" />
+    <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="JPG2Vector.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="TextureEffect.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexFlatEffect.h" />
     <ClInclude Include="VertexIndexList.h" />
     <ClInclude Include="FrameMath.h" />
     <ClInclude Include="ChiliWin.h" />
@@ -181,9 +184,12 @@
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
+    <ClInclude Include="Zbuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="box.cpp" />
+    <ClCompile Include="DefaultGeometryShader.cpp" />
+    <ClCompile Include="DefaultVertexShader.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
@@ -198,6 +204,8 @@
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vec3.cpp" />
     <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="VertexFlatEffect.cpp" />
+    <ClCompile Include="Zbuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

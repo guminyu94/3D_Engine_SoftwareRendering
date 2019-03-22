@@ -30,9 +30,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 	box box_1;
+	box box_2;
 	ScreenTransformer s_trans;
 	Pipeline<Effect> pl;
-	IndexedTriangleList<Vertex>* box_vertexlist_ptr;
+	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_1;
+	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_2;
 	static constexpr float dTheta = PI;
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;

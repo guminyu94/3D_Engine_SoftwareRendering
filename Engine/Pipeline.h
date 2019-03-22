@@ -9,7 +9,7 @@
 #include <algorithm>
 #include "TextureEffect.h"
 #include "Vertex.h"
-
+#include "Zbuffer.h"
 
 // fixed-function triangle drawing pipeline
 // draws textured triangle lists with clamping
@@ -19,49 +19,53 @@ class Pipeline
 {
 
 public:
+
 	//typedef typename Pipeline<class Effect> Pipeline;
+	typedef typename Effect::VertexShader::Output VSout;
+	typedef typename Effect::GeometryShader::Output GSOut;
+
 	Pipeline(Graphics& gfx)
 		:
-		gfx(gfx)
+		gfx(gfx),
+		zb(gfx.ScreenWidth, gfx.ScreenHeight)
 	{}
+
+	//reset the z buffer
+	void BeginFrame()
+	{
+		zb.Clear();
+		triangle_index = 0u;
+	}
+
 	void Draw(IndexedTriangleList<Vertex>& triList)
 	{
 		effect.ps.loadTex(&(triList.tex_img));
 		ProcessVertices(triList.vertices, triList.indices);
 	}
-	void BindRotation(const Mat3& rotation_in)
-	{
-		rotation = rotation_in;
-	}
-	void BindTranslation(const Vec3& translation_in)
-	{
-		translation = translation_in;
-	}
+
+
 private:
 	// vertex processing function
 	// transforms vertices and then passes vtx & idx lists to triangle assembler
 	void ProcessVertices(const std::vector<class Vertex>& vertices, const std::vector<unsigned int>& indices)
 	{
 		// create vertex vector for vs output
-		std::vector<Vertex> verticesOut;
+		std::vector<VSout> verticesOut(vertices.size());
 
-		// transform vertices using matrix + vector
-		for (const auto& v : vertices)
-		{
-			verticesOut.emplace_back(v.pos * rotation + translation, v.t);
-		}
+		std::transform(vertices.begin(),vertices.end(), verticesOut.begin(), effect.dvs);
 
 		// assemble triangles from stream of indices and vertices
 		AssembleTriangles(verticesOut, indices);
 	}
+
 	// triangle assembly function
 	// assembles indexed vertex stream into triangles and passes them to post process
 	// culls (does not send) back facing triangles
-	void AssembleTriangles(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+	void AssembleTriangles(const std::vector<VSout>& vertices, const std::vector<unsigned int>& indices)
 	{
 		// assemble triangles in the stream and process
 		for (unsigned int i = 0, end = indices.size() / 3;
-			i < end; i++)
+			i < end; i++, triangle_index++)
 		{
 
 			// determine triangle vertices via indexing
@@ -82,18 +86,20 @@ private:
 			}
 		}
 	}
+
 	// triangle processing function
 	// takes 3 vertices to generate triangle
 	// sends generated triangle to post-processing
-	void ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
+	void ProcessTriangle(const VSout& v0, const VSout& v1, const VSout& v2)
 	{
 		// generate triangle from 3 vertices using gs
 		// and send to post-processing
-		PostProcessTriangleVertices(Triangle<Vertex>{ v0, v1, v2 });
+		PostProcessTriangleVertices(effect.gs(v0,v1,v2,triangle_index));
 	}
+
 	// vertex post-processing function
 	// perform perspective and viewport transformations
-	void PostProcessTriangleVertices(Triangle<Vertex>& triangle)
+	void PostProcessTriangleVertices(Triangle<VSout>& triangle)
 	{
 		// perspective divide and screen transform for all 3 vertices
 		pst.Transform(triangle.v0);
@@ -103,8 +109,9 @@ private:
 		// draw the triangle
 		DrawTriangle(triangle);
 	}
+
 	// === triangle rasterization functions ===
-	void DrawTriangle(const Triangle<Vertex>& triangle)
+	void DrawTriangle(const Triangle<VSout>& triangle)
 	{
 		DrawTexTriangle(triangle.v0.pos, triangle.v1.pos, triangle.v2.pos, triangle.v0.t, triangle.v1.t, triangle.v2.t);
 	}
@@ -249,15 +256,14 @@ private:
 					tex_y = (line_ratio*(tex_point2_y - tex_point1_y) + tex_point1_y);
 
 					float z = 1.0f / (line_ratio*(z_2 - z_1) + z_1);
-
-					tex_x *= z;
-					tex_y *= z;
-
-					gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(tex_x), (int)(tex_y)));
+					if (zb.TestAndSet((int)(j), (int)(i), z))
+					{
+						tex_x *= z;
+						tex_y *= z;
+						gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(tex_x), (int)(tex_y)));
+					}
 
 				}
-
-
 
 			}
 		}
@@ -272,15 +278,15 @@ private:
 		{
 
 			float ratio_1_y = (tv1.y - tv3.y) / (v1.y - v3.y);
-				float ratio_2_y = (tv2.y - tv3.y) / (v2.y - v3.y);
+			float ratio_2_y = (tv2.y - tv3.y) / (v2.y - v3.y);
 
-				float ratio_1_x = (tv1.x - tv3.x) / (v1.y - v3.y);
-				float ratio_2_x = (tv2.x - tv3.x) / (v2.y - v3.y);
+			float ratio_1_x = (tv1.x - tv3.x) / (v1.y - v3.y);
+			float ratio_2_x = (tv2.x - tv3.x) / (v2.y - v3.y);
 
-				float ratio_1_z = (tv1.z - tv3.z) / (v1.y - v3.y);
-				float ratio_2_z = (tv2.z - tv3.z) / (v2.y - v3.y);
+			float ratio_1_z = (tv1.z - tv3.z) / (v1.y - v3.y);
+			float ratio_2_z = (tv2.z - tv3.z) / (v2.y - v3.y);
 
-				float slope_1_x = (v1.x - v3.x) / (v1.y - v3.y);
+			float slope_1_x = (v1.x - v3.x) / (v1.y - v3.y);
 			float slope_2_x = (v2.x - v3.x) / (v2.y - v3.y);
 			float slope_1_z = (v1.z - v3.z) / (v1.y - v3.y);
 			float slope_2_z = (v2.z - v3.z) / (v2.y - v3.y);
@@ -316,16 +322,15 @@ private:
 
 					float z = 1.0f / (line_ratio*(z_2 - z_1) + z_1);
 
-					tex_x *= z;
-					tex_y *= z;
-
-					gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(tex_x), (int)(tex_y)));
-
+					if (zb.TestAndSet((int)(j), (int)(i), z))
+					{
+						tex_x *= z;
+						tex_y *= z;
+						gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(tex_x), (int)(tex_y)));
+					}
 
 
 				}
-
-
 
 			}
 		}
@@ -340,4 +345,6 @@ private:
 	Mat3 rotation;
 	Vec3 translation;
 	JPG2Vector * tex_img_ptr;
+	Zbuffer zb;
+	unsigned int triangle_index;
 };

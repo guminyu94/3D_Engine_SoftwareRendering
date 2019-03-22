@@ -31,7 +31,8 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	pl(gfx),
-	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg")
+	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg",0.0f),
+	box_2(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 1.1f)
 {
 	/*
 	Vec3 v1 = { 0,0,0 };
@@ -47,9 +48,8 @@ Game::Game(MainWindow& wnd)
 	tri_vert_list.push_back({ v3,tv3 });
 	tri_vertexlist_ptr = new IndexedTriangleList<Vertex> (tri_vert_list, {0,1,2}, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg");
 	*/
-	box_vertexlist_ptr = box_1.getIndexedTriangleList();
-
-	
+	box_vertexlist_ptr_1 = box_1.getIndexedTriangleList();
+	box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
 };
 
 void Game::Go()
@@ -101,6 +101,7 @@ void Game::ComposeFrame()
 {
 
 	// set up the rot matrix
+	pl.BeginFrame();
 	auto rotxMat = _Mat3<float>::RotationX(theta_x);
 	auto rotyMat = _Mat3<float>::RotationY(theta_y);
 	auto rotzMat = _Mat3<float>::RotationZ(theta_z);
@@ -161,8 +162,9 @@ void Game::ComposeFrame()
 	}
 	*/
 	Vec3 tran_vec{ 0,0,offset_z };
-	pl.BindRotation(rotMat);
-	pl.BindTranslation(tran_vec);
-	pl.Draw(*box_vertexlist_ptr);
+	pl.effect.dvs.BindRotation(rotMat);
+	pl.effect.dvs.BindTranslation(tran_vec);
+	pl.Draw(*box_vertexlist_ptr_1);
+	pl.Draw(*box_vertexlist_ptr_2);
 
 }
