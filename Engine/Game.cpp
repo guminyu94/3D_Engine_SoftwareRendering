@@ -50,6 +50,8 @@ Game::Game(MainWindow& wnd)
 	*/
 	box_vertexlist_ptr_1 = box_1.getIndexedTriangleList();
 	box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
+	box_vertexlist_ptr_1->getFaceNorm();
+	box_vertexlist_ptr_2->getFaceNorm();
 };
 
 void Game::Go()
@@ -162,8 +164,8 @@ void Game::ComposeFrame()
 	}
 	*/
 	Vec3 tran_vec{ 0,0,offset_z };
-	pl.effect.dvs.BindRotation(rotMat);
-	pl.effect.dvs.BindTranslation(tran_vec);
+	pl.effect.vs.BindRotation(rotMat);
+	pl.effect.vs.BindTranslation(tran_vec);
 	pl.Draw(*box_vertexlist_ptr_1);
 	pl.Draw(*box_vertexlist_ptr_2);
 

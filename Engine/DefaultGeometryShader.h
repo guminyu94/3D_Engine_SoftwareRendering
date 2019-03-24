@@ -1,13 +1,13 @@
 #pragma once
 #include "Triangle.h"
 
-template<class Vertex>
+template<class T>
 class DefaultGeometryShader
 {
 public:
-	typedef Vertex Output;
+	typedef T Output;
 public:
-	Triangle<Output> operator()(const Vertex & in0, const Vertex & in1, const Vertex& in2, unsigned int tri_index)
+	Triangle<T> operator()(const T & in0, const T & in1, const T& in2, unsigned int tri_index)
 	{
 		return { in0 ,in1 ,in2 };
 	}

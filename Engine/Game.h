@@ -31,7 +31,6 @@ private:
 	/*  User Variables              */
 	box box_1;
 	box box_2;
-	ScreenTransformer s_trans;
 	Pipeline<Effect> pl;
 	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_1;
 	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_2;

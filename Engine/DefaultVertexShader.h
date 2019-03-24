@@ -2,11 +2,11 @@
 #include "Mat3.h"
 #include "Vec3.h"
 
-template<class Vertex>
+template<class T>
 class DefaultVertexShader
 {
 public:
-	typedef Vertex Output;
+	typedef T Output;
 public:
 	void BindRotation(const Mat3& rotation_in)
 	{
@@ -18,7 +18,7 @@ public:
 		translation = translation_in;
 	}
 
-	Output operator() (const Vertex& in) const
+	Output operator() (const T& in) const
 	{
 		return { in.pos * rotation + translation,in };
 	}

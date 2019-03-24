@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Vertex.h"
 
+template<class T>
 class ScreenTransformer
 {
 public:
@@ -13,7 +14,7 @@ public:
 		yFactor(float(Graphics::ScreenHeight) / 2.0f)
 	{}
 
-	Vertex& Transform(Vertex& v) const
+	T& Transform(T & v) const
 	{
 		const float zInv = 1.0f / v.pos.z;
 		// to do the perspective correction, first bring all the pos & tex vec to 1/z space
@@ -26,9 +27,10 @@ public:
 		return v;
 	}
 
-	Vertex GetTransformed(const Vertex& v) const
+
+	T GetTransformed(const T& v) const
 	{
-		return Transform(Vertex(v));
+		return Transform(T(v));
 	}
 private:
 	float xFactor;

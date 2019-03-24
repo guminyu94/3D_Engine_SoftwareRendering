@@ -20,7 +20,7 @@
 ******************************************************************************************/
 #pragma once
 
-#include "Math.h"
+#include "FrameMath.h"
 
 template <typename T>
 class _Vec3
@@ -43,14 +43,14 @@ public:
 		_Vec3(vect.x, vect.y, vect.z)
 	{}
 
-	/*
+	
 	template <typename T2>
 
 	explicit operator _Vec3<T2>() const
 	{
 		return { (T2)x,(T2)y,(T2)z };
 	}
-	*/
+	
 
 	// square of the length
 	T		LenSq() const
@@ -186,6 +186,37 @@ public:
 		y = (z*rhs.x - x * rhs.z);
 		z = (x*rhs.y - y * rhs.x);
 		return this
+	}
+
+	// clamp to between 0.0 ~ 1.0
+	_Vec3&	Saturate()
+	{
+		x = std::min(1.0f, std::max(0.0f, x));
+		y = std::min(1.0f, std::max(0.0f, y));
+		z = std::min(1.0f, std::max(0.0f, z));
+		return *this;
+	}
+	// clamp to between 0.0 ~ 1.0
+	_Vec3	GetSaturated() const
+	{
+		_Vec3 temp(*this);
+		temp.Saturate();
+		return temp;
+	}
+	// x3 = x1 * x2 etc.
+	_Vec3&  Hadamard(const _Vec3& rhs)
+	{
+		x *= rhs.x;
+		y *= rhs.y;
+		z *= rhs.z;
+		return *this;
+	}
+	// x3 = x1 * x2 etc.
+	_Vec3	GetHadamard(const _Vec3& rhs) const
+	{
+		_Vec3 temp(*this);
+		temp.Hadamard(rhs);
+		return temp;
 	}
 
 public:

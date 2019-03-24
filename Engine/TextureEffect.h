@@ -6,12 +6,14 @@
 #include "DefaultVertexShader.h"
 #include "Vertex.h"
 #include "DefaultGeometryShader.h"
+#include "VertexFlatEffect.h"
 
 class Effect
 {
 public:
-	typedef DefaultVertexShader<Vertex> VertexShader;
-	typedef DefaultGeometryShader<Vertex> GeometryShader;
+	// typedef DefaultVertexShader<Vertex> VertexShader;
+	typedef VertexFlatEffect VertexShader;
+	typedef DefaultGeometryShader<VertexShader::Output> GeometryShader;
 public:
 	class PixelShader
 	{
@@ -23,6 +25,7 @@ public:
 			return tex_img_ptr->getPix(x, y);
 		}
 
+		
 		void loadTex(JPG2Vector *  _tex_img_ptr)
 		{
 			tex_img_ptr = _tex_img_ptr;
@@ -33,7 +36,7 @@ public:
 	};
 public:
 	PixelShader ps;
-	VertexShader dvs;
+	VertexShader vs;
 	GeometryShader gs;
 };
 

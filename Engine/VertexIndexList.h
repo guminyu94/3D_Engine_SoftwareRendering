@@ -21,17 +21,19 @@ public:
 	{
 		for (unsigned int i = 0; i < indices.size()/3; i++)
 		{
-			auto& v0 = vertices[indices[i * 3]];
-			auto& v1 = vertices[indices[i * 3 + 1]];
-			auto& v2 = vertices[indices[i * 3 + 2]];
+			auto& v0 = vertices[i * 3];
+			auto& v1 = vertices[i * 3 + 1];
+			auto& v2 = vertices[i * 3 + 2];
 			//cross product
-			Vec3 norm = (v1.pos - v0.pos) % (v2.pos - v0.pos)
-			verticesNorm.emplace_back(norm.Normlize());
+			Vec3 norm = (v1.pos - v0.pos) % (v2.pos - v0.pos);
+			norm.Normalize();
+			v0.n = norm;
+			v1.n = norm;
+			v2.n = norm;
+				
 		}
 	}
 	std::vector<T> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Vec>
 	JPG2Vector tex_img;
-	std::vector<Vec3> verticesNorm;
 };

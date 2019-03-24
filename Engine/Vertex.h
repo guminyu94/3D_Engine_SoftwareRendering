@@ -65,4 +65,6 @@ public:
 public:
 	Vec3 pos;
 	Vec3 t;
+	Vec3 n;
+	Vec3 c;
 };
