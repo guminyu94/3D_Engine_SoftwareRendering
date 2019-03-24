@@ -35,6 +35,9 @@ public:
 		}
 
 	}
+	
+	JPG2Vector()
+	{};
 
 	// get the pixel
 	Color getPix(int x, int y)

@@ -16,6 +16,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{8b6c92a8-f65d-451e-80e3-d65773602b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Effect">
+      <UniqueIdentifier>{a98603cf-6839-4d33-91d2-b603117a3a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Obj">
+      <UniqueIdentifier>{93f2b1a4-51cf-4160-8066-3a6e6c536748}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -69,16 +75,7 @@
     <ClInclude Include="Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FrameMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenTransform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexIndexList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JPG2Vector.h">
@@ -96,20 +93,35 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextureEffect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Zbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultVertexShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultGeometryShader.h">
+    <ClInclude Include="VertexIndexList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VertexFlatEffect.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultGeometryShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultVertexShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenTransform.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureEffect.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="box.h">
+      <Filter>Header Files\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>Header Files\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFileLoader.h">
+      <Filter>Header Files\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,7 @@ private:
 	Pipeline<Effect> pl;
 	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_1;
 	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_2;
+	IndexedTriangleList<Vertex> Rabbit;
 	static constexpr float dTheta = PI;
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;

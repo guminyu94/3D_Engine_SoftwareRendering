@@ -24,6 +24,7 @@
 #include <windows.h>
 #include <string>
 #include "JPG2Vector.h"
+#include "ObjFileLoader.h"
 
 
 Game::Game(MainWindow& wnd)
@@ -31,8 +32,9 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	pl(gfx),
-	box_1(1.0f,"aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg",0.0f),
-	box_2(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 1.1f)
+	box_1(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 0.0f),
+	box_2(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 1.1f),
+	Rabbit(std::move(ModelLoader<Vertex>::Loader("bunny.obj")))
 {
 	/*
 	Vec3 v1 = { 0,0,0 };
@@ -52,6 +54,8 @@ Game::Game(MainWindow& wnd)
 	box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
 	box_vertexlist_ptr_1->getFaceNorm();
 	box_vertexlist_ptr_2->getFaceNorm();
+	Rabbit.getFaceNorm();
+
 };
 
 void Game::Go()
@@ -166,7 +170,7 @@ void Game::ComposeFrame()
 	Vec3 tran_vec{ 0,0,offset_z };
 	pl.effect.vs.BindRotation(rotMat);
 	pl.effect.vs.BindTranslation(tran_vec);
-	pl.Draw(*box_vertexlist_ptr_1);
-	pl.Draw(*box_vertexlist_ptr_2);
-
+	//pl.Draw(*box_vertexlist_ptr_1);
+	//pl.Draw(*box_vertexlist_ptr_2);
+	pl.Draw(Rabbit);
 }

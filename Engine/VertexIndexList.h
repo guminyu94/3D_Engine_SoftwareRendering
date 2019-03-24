@@ -17,6 +17,10 @@ public:
 		assert(indices.size() % 3 == 0);
 	}
 
+	IndexedTriangleList()
+	{};
+
+
 	void getFaceNorm()
 	{
 		for (unsigned int i = 0; i < indices.size()/3; i++)

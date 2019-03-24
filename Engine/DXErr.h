@@ -33,7 +33,7 @@ const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr );
 // DXGetErrorDescription has to be modified to return a copy in a buffer rather than
 // the original static string.
 //--------------------------------------------------------------------------------------
-void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ size_t count );
+void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ unsigned int count );
 
 #define DXGetErrorDescription DXGetErrorDescriptionW
 

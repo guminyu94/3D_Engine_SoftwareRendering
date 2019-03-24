@@ -3426,7 +3426,7 @@ const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr )
 
 
 //--------------------------------------------------------------------------------------
-void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ size_t count )
+void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ unsigned int count )
 {
     if ( !count )
         return;
@@ -3434,7 +3434,7 @@ void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* des
     *desc = 0;
 
     // First try to see if FormatMessage knows this hr
-    UINT icount = static_cast<UINT>( std::min<size_t>( count, 32767 ) );
+    UINT icount = static_cast<UINT>( std::min<unsigned int>( count, 32767 ) );
 
     DWORD result = FormatMessageW( FORMAT_MESSAGE_FROM_SYSTEM, nullptr, hr, 
                                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), desc, icount, nullptr );
@@ -3863,7 +3863,7 @@ HRESULT WINAPI DXTraceW( _In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HR
        OutputDebugStringW( strBuffer );
     }
 
-    size_t nMsgLen = (strMsg) ? wcsnlen_s( strMsg, 1024 ) : 0;
+    unsigned int nMsgLen = (strMsg) ? wcsnlen_s( strMsg, 1024 ) : 0;
     if( nMsgLen > 0 )
     {
         OutputDebugStringW( strMsg );

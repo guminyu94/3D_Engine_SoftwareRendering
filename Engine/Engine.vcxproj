@@ -160,8 +160,10 @@
     <ClInclude Include="DefaultGeometryShader.h" />
     <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="JPG2Vector.h" />
+    <ClInclude Include="ObjFileLoader.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="TextureEffect.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexFlatEffect.h" />
