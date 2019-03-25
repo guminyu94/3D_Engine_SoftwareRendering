@@ -68,9 +68,9 @@ private:
 		{
 
 			// determine triangle vertices via indexing
-			auto& v0 = vertices[i * 3];
-			auto& v1 = vertices[i * 3 + 1];
-			auto& v2 = vertices[i * 3 + 2];
+			auto& v0 = vertices[indices[i * 3]];
+			auto& v1 = vertices[indices[i * 3+1]];
+			auto& v2 = vertices[indices[i * 3+2]];
 			// cull backfacing triangles with cross product (%)
 			if ((((v1.pos - v0.pos) % (v2.pos - v0.pos)) * (v0.pos + v1.pos + v2.pos) / 3) < 0.0f)
 			{
@@ -217,7 +217,7 @@ private:
 						//cur_point.t.x *= cur_point_z;
 						//cur_point.t.y *= cur_point_z;
 						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
-						gfx.PutPixel((int)(j), (int)(i), (Light_c));
+						gfx.PutPixel((int)(j), (int)(i), Light_c);
 
 					}
 
@@ -256,7 +256,7 @@ private:
 						//cur_point.t.x *= cur_point_z;
 						//cur_point.t.y *= cur_point_z;
 						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
-						gfx.PutPixel((int)(j), (int)(i), (Light_c));
+						gfx.PutPixel((int)(j), (int)(i), Light_c);
 
 					}
 

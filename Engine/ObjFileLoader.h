@@ -99,6 +99,46 @@ public:
 		}
 		return t1;
 	}
+	
+	static void AdjustToTrueCenter()
+	{
+		// used to enable miniball to access vertex pos info
+		struct VertexAccessor
+		{
+			// iterator type for iterating over vertices
+			typedef std::vector<T>::const_iterator Pit;
+			// it type for iterating over components of vertex
+			// (pointer is used to iterate over members of class here)
+			typedef const float* Cit;
+			// functor that miniball uses to get element iter based on vertex iter
+			Cit operator()(Pit it) const
+			{
+				return &it->pos.x;
+			}
+		};
+
+		// solve the minimum bounding sphere
+		Miniball::Miniball<VertexAccessor> mb(3, vertices.cbegin(), vertices.cend());
+		// get center of min sphere
+		// result is a pointer to float[3] (what a shitty fuckin interface)
+		const auto pc = mb.center();
+		const Vec3 center = { *pc,*std::next(pc),*std::next(pc,2) };
+		// adjust all vertices so that center of minimal sphere is at 0,0
+		for (auto& v : vertices)
+		{
+			v.pos -= center;
+		}
+	}
+	float GetRadius() const
+	{
+		// find element with max distance from 0,0; that is our radius
+		return std::max_element(vertices.begin(), vertices.end(),
+			[](const T& v0, const T& v1)
+		{
+			return v0.pos.LenSq() < v1.pos.LenSq();
+		}
+		)->pos.Len();
+	}
 
 public:
 

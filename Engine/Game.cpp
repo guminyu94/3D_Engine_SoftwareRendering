@@ -18,13 +18,13 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
+#pragma once
 #include "MainWindow.h"
 #include "Game.h"
 #include "Mat3.h"
 #include <windows.h>
 #include <string>
-#include "JPG2Vector.h"
-#include "ObjFileLoader.h"
+#include "VertexIndexList.h"
 
 
 Game::Game(MainWindow& wnd)
@@ -34,7 +34,7 @@ Game::Game(MainWindow& wnd)
 	pl(gfx),
 	box_1(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 0.0f),
 	box_2(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 1.1f),
-	Rabbit(std::move(ModelLoader<Vertex>::Loader("bunny.obj")))
+	Rabbit(std::move(IndexedTriangleList<Vertex>::Loader("bunny.obj")))
 {
 	/*
 	Vec3 v1 = { 0,0,0 };
@@ -71,35 +71,35 @@ void Game::UpdateModel()
 	const float dt = 1.0f / 60.0f;
 	if (wnd.kbd.KeyIsPressed('Q'))
 	{
-		theta_x += dTheta * dt/2;
+		theta_x += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
-		theta_y += dTheta * dt/2;
+		theta_y += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('E'))
 	{
-		theta_z += dTheta * dt/2;
+		theta_z += dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('A'))
 	{
-		theta_x -= dTheta * dt/2;
+		theta_x -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('S'))
 	{
-		theta_y -= dTheta * dt/2;
+		theta_y -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('D'))
 	{
-		theta_z -= dTheta * dt/2;
+		theta_z -= dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('F'))
 	{
-		offset_z +=  dt/2;
+		offset_z +=  dt;
 	}
 	if (wnd.kbd.KeyIsPressed('G'))
 	{
-		offset_z -= dt/2;
+		offset_z -= dt;
 	}
 }
 

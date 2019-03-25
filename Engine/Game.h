@@ -10,6 +10,7 @@
 #include "ScreenTransform.h"
 #include "FrameMath.h"
 #include "Pipeline.h"
+#include "ObjFileLoader.h"
 
 class Game
 {
@@ -39,7 +40,7 @@ private:
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
-	float offset_z = -3.0f;
+	float offset_z = -0.5f;
 	const Color colors_array[12] = {
 		Colors::White,
 		Colors::Blue,

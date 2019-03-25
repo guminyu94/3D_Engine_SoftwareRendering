@@ -160,6 +160,7 @@
     <ClInclude Include="DefaultGeometryShader.h" />
     <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="JPG2Vector.h" />
+    <ClInclude Include="Miniball.h" />
     <ClInclude Include="ObjFileLoader.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="TextureEffect.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="TextureEffect.cpp" />
+    <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vec3.cpp" />
     <ClCompile Include="Vertex.cpp" />
