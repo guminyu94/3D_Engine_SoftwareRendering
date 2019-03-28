@@ -8,24 +8,26 @@
 #include "VertexSmoothingPointLightShader.h"
 #include "DefaultVertexShader.h"
 
-class Effect
+class DefaultEffect
 {
 public:
-	// typedef DefaultVertexShader<Vertex> VertexShader;
-	typedef VertexSmoothingPointEffect VertexShader;
+	typedef DefaultVertexShader<Vertex> VertexShader;
+	//typedef VertexSmoothingPointEffect VertexShader;
 	typedef DefaultGeometryShader<VertexShader::Output> GeometryShader;
 public:
 	class PixelShader
 	{
-		
+
 	public:
-		
-		Color operator()(int x, int y) const
+
+		template<class Input>
+		Color operator()(const Input& in) const
 		{
-			return tex_img_ptr->getPix(x, y);
+			//return tex_img_ptr->getPix(x, y);
+			return {255,255,255};
 		}
 
-		
+
 		void loadTex(JPG2Vector *  _tex_img_ptr)
 		{
 			tex_img_ptr = _tex_img_ptr;
@@ -39,4 +41,5 @@ public:
 	VertexShader vs;
 	GeometryShader gs;
 };
+
 

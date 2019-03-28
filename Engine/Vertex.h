@@ -6,6 +6,7 @@ class Vertex
 {
 public:
 	Vertex() = default;
+
 	Vertex(const Vec3& pos)
 		:
 		pos(pos)
@@ -22,6 +23,9 @@ public:
 		t(t),
 		pos(pos)
 	{}
+
+
+
 	Vertex& operator+=(const Vertex& rhs)
 	{
 		pos += rhs.pos;

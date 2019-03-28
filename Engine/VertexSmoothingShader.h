@@ -7,7 +7,7 @@
 #include "Vertex.h"
 #include <algorithm>
 
-class VertexFlatEffect
+class VertexSmoothingEffect
 {
 public:
 	class Output
@@ -31,6 +31,7 @@ public:
 		Output& operator+=(const Output& rhs)
 		{
 			pos += rhs.pos;
+			color += rhs.color;
 			return *this;
 		}
 		Output operator+(const Output& rhs) const
@@ -40,6 +41,7 @@ public:
 		Output& operator-=(const Output& rhs)
 		{
 			pos -= rhs.pos;
+			color -= rhs.color;
 			return *this;
 		}
 		Output operator-(const Output& rhs) const
@@ -49,6 +51,7 @@ public:
 		Output& operator*=(float rhs)
 		{
 			pos *= rhs;
+			color *= rhs;
 			return *this;
 		}
 		Output operator*(float rhs) const
@@ -58,6 +61,7 @@ public:
 		Output& operator/=(float rhs)
 		{
 			pos /= rhs;
+			color /= rhs;
 			return *this;
 		}
 		Output operator/(float rhs) const

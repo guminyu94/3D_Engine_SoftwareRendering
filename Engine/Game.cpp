@@ -25,6 +25,7 @@
 #include <windows.h>
 #include <string>
 #include "VertexIndexList.h"
+#include "Sphere.h"
 
 
 Game::Game(MainWindow& wnd)
@@ -32,9 +33,10 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	pl(gfx),
-	box_1(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 0.0f),
-	box_2(1.0f, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg", 1.1f),
-	Rabbit(std::move(IndexedTriangleList<Vertex>::Loader("bunny.obj")))
+	pl_2(gfx),
+	box_1(0.1f),
+	//sphere(std::move(Sphere::GetPlain<Vertex>(0.1f,12,24))),
+	Rabbit(std::move(IndexedTriangleList<Vertex>::LoadNormals("suzanne.obj")))
 {
 	/*
 	Vec3 v1 = { 0,0,0 };
@@ -51,11 +53,14 @@ Game::Game(MainWindow& wnd)
 	tri_vertexlist_ptr = new IndexedTriangleList<Vertex> (tri_vert_list, {0,1,2}, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg");
 	*/
 	box_vertexlist_ptr_1 = box_1.getIndexedTriangleList();
-	box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
+	//box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
 	box_vertexlist_ptr_1->getFaceNorm();
-	box_vertexlist_ptr_2->getFaceNorm();
-	Rabbit.getFaceNorm();
-
+	//box_vertexlist_ptr_2->getFaceNorm();
+	Rabbit.AdjustToTrueCenter();
+	//Rabbit.getFaceNorm();
+	offset_z = -2 * Rabbit.GetRadius();
+	theta_z = PI;
+	//sphere.getFaceNorm();
 };
 
 void Game::Go()
@@ -95,12 +100,72 @@ void Game::UpdateModel()
 	}
 	if (wnd.kbd.KeyIsPressed('F'))
 	{
-		offset_z +=  dt;
+		offset_z +=  2*dt;
 	}
 	if (wnd.kbd.KeyIsPressed('G'))
 	{
-		offset_z -= dt;
+		offset_z -= 2*dt;
 	}
+	/*if (wnd.kbd.KeyIsPressed('Y'))
+	{
+		lt += dTheta*dt;
+		pl.effect.vs.SetLightDirection(lt);
+	}
+	if (wnd.kbd.KeyIsPressed('H'))
+	{
+		lt -= dTheta * dt;
+		pl.effect.vs.SetLightDirection(lt);
+	}
+	if (wnd.kbd.KeyIsPressed('U'))
+	{
+		alv += dt;
+		pl.effect.vs.SetAmbientLight(alv);
+	}
+	if (wnd.kbd.KeyIsPressed('J'))
+	{
+		alv -= dt;
+		pl.effect.vs.SetAmbientLight(alv);
+	}
+	if (wnd.kbd.KeyIsPressed('I'))
+	{
+		dlv += dt;
+		pl.effect.vs.SetAmbientLight(dlv);
+	}
+	if (wnd.kbd.KeyIsPressed('K'))
+	{
+		dlv -= dt;
+		pl.effect.vs.SetAmbientLight(dlv);
+	}
+	*/
+	if (wnd.kbd.KeyIsPressed('J'))
+	{
+		lx += 3*dt;
+
+	}
+	if (wnd.kbd.KeyIsPressed('L'))
+	{
+		lx -= 3*dt;
+	}
+	if (wnd.kbd.KeyIsPressed('I'))
+	{
+		ly +=3* dt;
+	}
+	if (wnd.kbd.KeyIsPressed('K'))
+	{
+		ly -= 3*dt;
+	}
+	if (wnd.kbd.KeyIsPressed('U'))
+	{
+		lz +=3* dt;
+	}
+	if (wnd.kbd.KeyIsPressed('O'))
+	{
+		lz -= 3*dt;
+	}
+	pl.effect.vs.SetPX(lx);
+	pl.effect.vs.SetPY(ly);
+	pl.effect.vs.SetPZ(lz);
+	pl.effect.ps.SetLightPosition({lx,ly,lz});
 }
 
 void Game::ComposeFrame()
@@ -168,9 +233,18 @@ void Game::ComposeFrame()
 	}
 	*/
 	Vec3 tran_vec{ 0,0,offset_z };
-	pl.effect.vs.BindRotation(rotMat);
-	pl.effect.vs.BindTranslation(tran_vec);
+	Vec3 tran_vec_2{ lx,ly,lz };
+	//pl.effect.vs.BindRotation(rotMat);
+	//pl.effect.vs.BindTranslation(tran_vec);
 	//pl.Draw(*box_vertexlist_ptr_1);
 	//pl.Draw(*box_vertexlist_ptr_2);
+	//pl.Draw(Rabbit);
+	pl.effect.vs.BindRotation(rotMat);
+	pl.effect.vs.BindTranslation(tran_vec);
+
+	pl_2.effect.vs.BindRotation(rotMat);
+	pl_2.effect.vs.BindTranslation(tran_vec_2);
+	//pl.Draw(sphere);
 	pl.Draw(Rabbit);
+	pl_2.Draw(*box_vertexlist_ptr_1);
 }

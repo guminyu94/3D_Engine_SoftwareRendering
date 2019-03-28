@@ -20,7 +20,7 @@ public:
 
 	Output operator() (const T& in) const
 	{
-		return { in.pos * rotation + translation,in };
+		return { in.pos * rotation + translation };
 	}
 
 private:

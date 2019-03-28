@@ -158,12 +158,15 @@
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="CImg.h" />
     <ClInclude Include="DefaultGeometryShader.h" />
+    <ClInclude Include="DefaultTextureEffect.h" />
     <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="JPG2Vector.h" />
     <ClInclude Include="Miniball.h" />
     <ClInclude Include="ObjFileLoader.h" />
     <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="TextureEffect.h" />
+    <ClInclude Include="TextureEffectHightlight.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vertex.h" />
@@ -187,6 +190,8 @@
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
+    <ClInclude Include="VertexSmoothingPointLightShader.h" />
+    <ClInclude Include="VertexSmoothingShader.h" />
     <ClInclude Include="Zbuffer.h" />
   </ItemGroup>
   <ItemGroup>

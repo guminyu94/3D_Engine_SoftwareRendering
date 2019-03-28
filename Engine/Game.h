@@ -11,6 +11,7 @@
 #include "FrameMath.h"
 #include "Pipeline.h"
 #include "ObjFileLoader.h"
+#include "DefaultTextureEffect.h"
 
 class Game
 {
@@ -31,16 +32,25 @@ private:
 	/********************************/
 	/*  User Variables              */
 	box box_1;
-	box box_2;
-	Pipeline<Effect> pl;
+	Pipeline<EffectHighlight> pl;
+	Pipeline<DefaultEffect> pl_2;
+	//Pipeline<DefaultEffect> pld;
 	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_1;
-	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_2;
+	//std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_2;
 	IndexedTriangleList<Vertex> Rabbit;
+	IndexedTriangleList<Vertex> sphere;
 	static constexpr float dTheta = PI;
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
-	float offset_z = -0.5f;
+	float offset_z = -2.0f;
+	//float alv = 0.1f;
+	//float lt = 0.0f;
+	//float dlv = 0.1f;
+	float lx =-1.0f;
+	float ly = 0.0f;
+	float lz = -2.0f;
+
 	const Color colors_array[12] = {
 		Colors::White,
 		Colors::Blue,

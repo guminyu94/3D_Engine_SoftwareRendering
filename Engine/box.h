@@ -71,7 +71,18 @@ public:
 		verticesUV.emplace_back(250, 500, 0);
 		verticesUV.emplace_back(250, 270, 0);
 	}
-
+	box(const float & _length) :
+		length(_length)
+	{
+		verticesXY.emplace_back(-length / 2, -length / 2, length / 2 );
+		verticesXY.emplace_back(length / 2, -length / 2, length / 2 );
+		verticesXY.emplace_back(length / 2, -length / 2, -length / 2 );
+		verticesXY.emplace_back(-length / 2, -length / 2, -length / 2 );
+		verticesXY.emplace_back(length / 2, length / 2, length / 2);
+		verticesXY.emplace_back(length / 2, length / 2, -length / 2 );
+		verticesXY.emplace_back(-length / 2, length / 2, -length / 2 );
+		verticesXY.emplace_back(-length / 2, length / 2, length / 2 );
+	}
 	std::unique_ptr<IndexedTriangleList<Vertex>> getIndexedTriangleList() const
 	{
 
@@ -86,13 +97,13 @@ public:
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned int i = 0; i < indices.size(); i++)
+		for (unsigned int i = 0; i < verticesXY.size(); i++)
 		{
-			Vertex vert_temp = { verticesXY[indices[i]],verticesUV[i] };
+			Vertex vert_temp = { verticesXY[i] };
 			vertices.emplace_back(vert_temp);
 		}
 
-		std::unique_ptr<IndexedTriangleList<Vertex>> boxList_ptr (new IndexedTriangleList<Vertex>{ vertices,indices,tex_img_filename });
+		std::unique_ptr<IndexedTriangleList<Vertex>> boxList_ptr (new IndexedTriangleList<Vertex>{ vertices,indices });
 
 		return boxList_ptr;
 

@@ -7,7 +7,7 @@
 #include "ScreenTransform.h"
 #include "Mat3.h"
 #include <algorithm>
-#include "TextureEffect.h"
+#include "TextureEffectHightlight.h"
 #include "Vertex.h"
 #include "Zbuffer.h"
 
@@ -66,7 +66,6 @@ private:
 		for (unsigned int i = 0, end = indices.size() / 3;
 			i < end; i++, triangle_index++)
 		{
-
 			// determine triangle vertices via indexing
 			auto& v0 = vertices[indices[i * 3]];
 			auto& v1 = vertices[indices[i * 3+1]];
@@ -106,7 +105,7 @@ private:
 		pst.Transform(triangle.v1);
 		pst.Transform(triangle.v2);
 		// put the light color on
-		Light_c = triangle.v0.color;
+		//Light_c = triangle.v0.color;
 		// draw the triangle
 		DrawTriangle(triangle);
 		
@@ -189,9 +188,9 @@ private:
 
 	void DrawTexUpperTriangle(const GSout & v1, const GSout & v2, const GSout & v3)
 	{
-		assert(v1.pos.y <= v2.pos.y && v1.pos.y <= v3.pos.y);
+		//assert(v1.pos.y <= v2.pos.y && v1.pos.y <= v3.pos.y);
 		//assert(v2.pos.y == v3.pos.y);
-		assert(v2.pos.x <= v3.pos.x);
+		//assert(v2.pos.x <= v3.pos.x);
 
 		
 		if (v2.pos.y != v1.pos.y && v2.pos.x != v3.pos.x)
@@ -203,7 +202,7 @@ private:
 				GSout point1 = (v2 - v1)*((i - v1.pos.y) / (v2.pos.y - v1.pos.y)) + v1;
 				GSout point2 = (v3 - v1)*((i - v1.pos.y) / (v3.pos.y - v1.pos.y)) + v1;
 
-				assert(point2.pos.x >= point1.pos.x);
+				//assert(point2.pos.x >= point1.pos.x);
 
 				for (float j = ceil(point1.pos.x); j <= floor(point2.pos.x); j++)
 				{
@@ -214,11 +213,11 @@ private:
 
 					if (zb.TestAndSet((int)(j), (int)(i), cur_point_z))
 					{
-						//cur_point.t.x *= cur_point_z;
-						//cur_point.t.y *= cur_point_z;
+						cur_point *= cur_point_z;
+						
 						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
-						gfx.PutPixel((int)(j), (int)(i), Light_c);
-
+						gfx.PutPixel((int)(j), (int)(i), effect.ps(cur_point));
+						//gfx.PutPixel((int)(j), (int)(i), Colors::White);
 					}
 
 				}
@@ -230,9 +229,9 @@ private:
 	void DrawTexLowerTriangle(const GSout & v1, const GSout & v2, const GSout & v3)
 	{
 		
-		assert(v3.pos.y >= v2.pos.y && v3.pos.y >= v1.pos.y);
+		//assert(v3.pos.y >= v2.pos.y && v3.pos.y >= v1.pos.y);
 		//assert(v1.pos.y == v2.pos.y);
-		assert(v1.pos.x <= v2.pos.x);
+		//assert(v1.pos.x <= v2.pos.x);
 		if (v3.pos.y != v2.pos.y && v1.pos.x != v2.pos.x)
 		{
 
@@ -241,7 +240,7 @@ private:
 
 				GSout point1 = (v1 - v3)* ((i - v3.pos.y) / (v1.pos.y - v3.pos.y)) + v3;
 				GSout point2 = (v2 - v3)*((i - v3.pos.y) / (v2.pos.y - v3.pos.y)) + v3;
-				assert(point2.pos.x >= point1.pos.x);
+				//assert(point2.pos.x >= point1.pos.x);
 
 
 				for (float j = ceil(point1.pos.x); j <= floor(point2.pos.x); j++)
@@ -253,10 +252,12 @@ private:
 
 					if (zb.TestAndSet((int)(j), (int)(i), cur_point_z))
 					{
+						cur_point *= cur_point_z;
 						//cur_point.t.x *= cur_point_z;
 						//cur_point.t.y *= cur_point_z;
 						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
-						gfx.PutPixel((int)(j), (int)(i), Light_c);
+						gfx.PutPixel((int)(j), (int)(i), effect.ps(cur_point));
+						//gfx.PutPixel((int)(j), (int)(i),Colors::White);
 
 					}
 

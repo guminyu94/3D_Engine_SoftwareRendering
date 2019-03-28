@@ -126,6 +126,21 @@
     <ClInclude Include="Miniball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexSmoothingShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexSmoothingPointLightShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureEffectHightlight.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultTextureEffect.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
