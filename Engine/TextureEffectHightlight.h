@@ -22,8 +22,6 @@ public:
 		Color operator()(const Input& in) const
 		{
 			// re-normalize interpolated surface normal
-
-
 			const auto surf_norm = in.n.GetNormalized();
 			// vertex to light data
 			const auto v_to_l = light_pos - in.worldPos;
@@ -41,8 +39,6 @@ public:
 			const auto s = light_diffuse * specular_intensity * std::pow(std::max(0.0f, -r.GetNormalized() * in.worldPos.GetNormalized()), specular_power);
 			// add diffuse+ambient, filter by material color, saturate and scale
 			return Color(material_color.GetHadamard(d + light_ambient + s).Saturate() * 255.0f);
-
-
 		}
 		void SetDiffuseLight(const Vec3& c)
 		{

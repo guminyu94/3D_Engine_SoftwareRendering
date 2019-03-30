@@ -43,13 +43,13 @@ private:
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
-	float offset_z = -2.0f;
+	float offset_z = 3.0f;
 	//float alv = 0.1f;
 	//float lt = 0.0f;
 	//float dlv = 0.1f;
-	float lx =-1.0f;
+	float lx = 0.0f;
 	float ly = 0.0f;
-	float lz = -2.0f;
+	float lz = 0.5f;
 
 	const Color colors_array[12] = {
 		Colors::White,

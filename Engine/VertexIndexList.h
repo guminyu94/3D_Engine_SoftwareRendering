@@ -50,6 +50,14 @@ public:
 		}
 	}
 
+	void RevNorm()
+	{
+		for (unsigned int i = 0; i < vertices.size() ; i++)
+		{
+			vertices[i].n = - ( vertices[i].n);
+		}
+	}
+
 	static IndexedTriangleList<T> Loader(const std::string& filename)
 
 	{

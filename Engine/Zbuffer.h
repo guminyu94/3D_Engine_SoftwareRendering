@@ -25,7 +25,7 @@ public:
 		const int nDepths = width * height;
 		for (int i = 0; i < nDepths; i++)
 		{
-			pbuffer[i] = -1*std::numeric_limits<float>::infinity();
+			pbuffer[i] = std::numeric_limits<float>::infinity();
 		}
 	}
 
@@ -41,7 +41,7 @@ public:
 	bool TestAndSet(int x, int y, float depth)
 	{
 		float & depthInBuffer = At(x, y);
-		if (depth > depthInBuffer)
+		if (depth < depthInBuffer)
 		{
 			depthInBuffer = depth;
 			return true;

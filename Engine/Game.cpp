@@ -21,7 +21,7 @@
 #pragma once
 #include "MainWindow.h"
 #include "Game.h"
-#include "Mat3.h"
+#include "Mat.h"
 #include <windows.h>
 #include <string>
 #include "VertexIndexList.h"
@@ -58,9 +58,11 @@ Game::Game(MainWindow& wnd)
 	//box_vertexlist_ptr_2->getFaceNorm();
 	Rabbit.AdjustToTrueCenter();
 	//Rabbit.getFaceNorm();
-	offset_z = -2 * Rabbit.GetRadius();
-	theta_z = PI;
+	offset_z = Rabbit.GetRadius()*2;
+	lz = Rabbit.GetRadius();
+	//theta_z = PI;
 	//sphere.getFaceNorm();
+	//Rabbit.RevNorm();
 };
 
 void Game::Go()
@@ -73,38 +75,38 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = 1.0f / 60.0f;
+	const float dt = 1.0f/4 ;
 	if (wnd.kbd.KeyIsPressed('Q'))
 	{
-		theta_x += dTheta * dt;
+		theta_x += 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
-		theta_y += dTheta * dt;
+		theta_y += 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('E'))
 	{
-		theta_z += dTheta * dt;
+		theta_z += 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('A'))
 	{
-		theta_x -= dTheta * dt;
+		theta_x -= 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('S'))
 	{
-		theta_y -= dTheta * dt;
+		theta_y -= 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('D'))
 	{
-		theta_z -= dTheta * dt;
+		theta_z -= 0.2*dTheta * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('F'))
 	{
-		offset_z +=  2*dt;
+		offset_z +=  0.6*dt;
 	}
 	if (wnd.kbd.KeyIsPressed('G'))
 	{
-		offset_z -= 2*dt;
+		offset_z -= 0.6*dt;
 	}
 	/*if (wnd.kbd.KeyIsPressed('Y'))
 	{
@@ -137,48 +139,57 @@ void Game::UpdateModel()
 		pl.effect.vs.SetAmbientLight(dlv);
 	}
 	*/
+	
 	if (wnd.kbd.KeyIsPressed('J'))
 	{
-		lx += 3*dt;
+		lx += 5*dt;
 
 	}
 	if (wnd.kbd.KeyIsPressed('L'))
 	{
-		lx -= 3*dt;
+		lx -= 5*dt;
 	}
 	if (wnd.kbd.KeyIsPressed('I'))
 	{
-		ly +=3* dt;
+		ly +=5* dt;
 	}
 	if (wnd.kbd.KeyIsPressed('K'))
 	{
-		ly -= 3*dt;
+		ly -= 5*dt;
 	}
 	if (wnd.kbd.KeyIsPressed('U'))
 	{
-		lz +=3* dt;
+		lz += 2* dt;
 	}
 	if (wnd.kbd.KeyIsPressed('O'))
 	{
-		lz -= 3*dt;
+		lz -= 2*dt;
 	}
-	pl.effect.vs.SetPX(lx);
-	pl.effect.vs.SetPY(ly);
-	pl.effect.vs.SetPZ(lz);
-	pl.effect.ps.SetLightPosition({lx,ly,lz});
+	// debugger output
+	//std::wstring w_string_debug;
+	//std::string string_debug = "Light_Z: " + std::to_string(lz) + " \n" + "\0";
+	//w_string_debug.assign(string_debug.begin(), string_debug.end());
+	//OutputDebugString(w_string_debug.c_str());
+
 }
 
 void Game::ComposeFrame()
 {
-
-	// set up the rot matrix
 	pl.BeginFrame();
-	auto rotxMat = _Mat3<float>::RotationX(theta_x);
-	auto rotyMat = _Mat3<float>::RotationY(theta_y);
-	auto rotzMat = _Mat3<float>::RotationZ(theta_z);
-	auto rotMat = rotxMat * rotyMat * rotzMat;
-
-
+	const auto proj = Mat4::ProjectionHFOV(100.0f, 1.33333f, 0.5f, 4.0f);
+	Vec4 test({ 0.4,0.1,0.2,1 });
+	auto result = test * proj;
+	// set up the rot matrix
+	
+	pl.effect.vs.BindWorld(
+		Mat4::RotationX(theta_x) *
+		Mat4::RotationY(theta_y) *
+		Mat4::RotationZ(theta_z) *
+		Mat4::Translation(0.0f, 0.0f, offset_z)
+	);
+	
+	pl.effect.vs.BindProjection(proj);
+	pl.effect.ps.SetLightPosition({ lx,ly,lz });
 	/*
 	// get the line and vertices list
 	IndexedLineList box_1_vl_list = box_1.getLineVertexIndexList();
@@ -232,19 +243,17 @@ void Game::ComposeFrame()
 		}
 	}
 	*/
-	Vec3 tran_vec{ 0,0,offset_z };
-	Vec3 tran_vec_2{ lx,ly,lz };
+
 	//pl.effect.vs.BindRotation(rotMat);
 	//pl.effect.vs.BindTranslation(tran_vec);
 	//pl.Draw(*box_vertexlist_ptr_1);
 	//pl.Draw(*box_vertexlist_ptr_2);
 	//pl.Draw(Rabbit);
-	pl.effect.vs.BindRotation(rotMat);
-	pl.effect.vs.BindTranslation(tran_vec);
 
-	pl_2.effect.vs.BindRotation(rotMat);
-	pl_2.effect.vs.BindTranslation(tran_vec_2);
+
+	//pl_2.effect.vs.BindTransformation(Mat4::Translation(lx,ly,lz ));
+
 	//pl.Draw(sphere);
 	pl.Draw(Rabbit);
-	pl_2.Draw(*box_vertexlist_ptr_1);
+	//pl_2.Draw(*box_vertexlist_ptr_1);
 }

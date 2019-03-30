@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 
-#include "Vec3.h"
-#include "Mat3.h"
+#include "Vec4.h"
+#include "Mat.h"
 #include "Colors.h"
 #include <cassert>
 #include "Vertex.h"
@@ -17,18 +17,18 @@ public:
 
 		// initilzation
 		Output() = default;
-		Output(const Vec3& pos)
+		Output(const Vec4& pos)
 			:
 			pos(pos)
 		{}
-		Output(const Vec3& src_pos, const Vec3& src_norm, const Vec3& src_color,const Vec3& src_worldPos)
+		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_color,const Vec3& src_worldPos)
 			:
 			color(src_color),
 			pos(src_pos),
 			n(src_norm),
 			worldPos(src_worldPos)
 		{}
-		Output(const Vec3& src_pos, const Vec3& src_norm, const Vec3& src_worldPos)
+		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldPos)
 			:
 			pos(src_pos),
 			n(src_norm),
@@ -81,28 +81,42 @@ public:
 			return Output(*this) /= rhs;
 		}
 	public:
-		Vec3 pos;
-		Vec3 n;
+		Vec4 pos;
+		Vec4 n;
 		Vec3 color;
 		Vec3 worldPos;
 	};
 public:
-	void BindRotation(const Mat3& rotation_in)
+
+	void BindWorld(const Mat4& transformation_in)
 	{
-		rotation = rotation_in;
+		world = transformation_in;
+		worldProj = world * proj;
 	}
-	void BindTranslation(const Vec3& translation_in)
+	void BindProjection(const Mat4& transformation_in)
 	{
-		translation = translation_in;
+		proj = transformation_in;
+		worldProj = world * proj;
+	}
+	const Mat4& GetProj() const
+	{
+		return proj;
 	}
 	Output operator()(const Vertex& v) const
 	{
-		// transform vertex pos first
-		const auto pos = v.pos * rotation + translation;
-		
-		return{ pos,v.n* rotation,pos};
-		// return{ v.pos * rotation + translation,Colors::Blue };
+		const auto p4 = Vec4(v.pos);
+		const auto newpos = p4 * worldProj;
+		return { newpos,Vec4{ v.n,0.0f } *world,p4 * world };
 	}
+
+
+private:
+	Mat4 world = Mat4::Identity();
+	Mat4 proj = Mat4::Identity();
+	Mat4 worldProj = Mat4::Identity();
+
+
+public:
 	void SetDiffuseLight(const float& dlv)
 	{
 		diffuse = { dlv,dlv,dlv };
@@ -115,22 +129,13 @@ public:
 	{
 		color = Vec3(c);
 	}
-	void SetPX(float x)
+	void SetLightPosition(const Vec3& lp)
 	{
-		light_pos.x = x;
+		light_pos = lp;
 	}
-	void SetPY(float y)
-	{
-		light_pos.y = y;
-	}
-	void SetPZ(float z)
-	{
-		light_pos.z = z;
-	}
-	
+
 private:
-	Mat3 rotation;
-	Vec3 translation;
+	Mat4 transforamtion;
 	Vec3 dir = { 1.0f,0.0f,0.0f };
 	Vec3 diffuse = { 1.0f, 1.0f , 1.0f };
 	Vec3 ambient = { 0.1f,0.1f,0.1f };
@@ -139,4 +144,5 @@ private:
 	float linear_attenuation = 1.0f;
 	float quadradic_attenuation = 2.6f;
 	float constant_attenuation = 0.3f;
+
 };

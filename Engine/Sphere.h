@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Vec3.h"
-#include "Mat3.h"
+#include "Mat.h"
 #include "VertexIndexList.h"
 
 class Sphere
@@ -36,7 +36,7 @@ public:
 
 		const auto calcIdx = [latDiv, longDiv](int iLat, int iLong)
 		{ return iLat * longDiv + iLong; };
-		std::vector<size_t> indices;
+		std::vector<unsigned int> indices;
 		for (int iLat = 0; iLat < latDiv - 2; iLat++)
 		{
 			for (int iLong = 0; iLong < longDiv - 1; iLong++)

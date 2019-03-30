@@ -1,30 +1,81 @@
 #pragma once
-#include "Mat3.h"
+#include "Mat.h"
 #include "Vec3.h"
 
 template<class T>
 class DefaultVertexShader
 {
 public:
-	typedef T Output;
-public:
-	void BindRotation(const Mat3& rotation_in)
+	class Output
 	{
-		rotation = rotation_in;
+	public:
+
+		// initilzation
+		Output() = default;
+	
+		Output(const Vec4& src_pos)
+			:
+			pos(src_pos)
+		{}
+
+		// math operators
+		Output& operator+=(const Output& rhs)
+		{
+			pos += rhs.pos;
+			
+			return *this;
+		}
+		Output operator+(const Output& rhs) const
+		{
+			return Output(*this) += rhs;
+		}
+		Output& operator-=(const Output& rhs)
+		{
+			pos -= rhs.pos;
+			
+			return *this;
+		}
+		Output operator-(const Output& rhs) const
+		{
+			return Output(*this) -= rhs;
+		}
+		Output& operator*=(float rhs)
+		{
+			pos *= rhs;
+			
+			return *this;
+		}
+		Output operator*(float rhs) const
+		{
+			return Output(*this) *= rhs;
+		}
+		Output& operator/=(float rhs)
+		{
+			pos /= rhs;
+			
+			return *this;
+		}
+		Output operator/(float rhs) const
+		{
+			return Output(*this) /= rhs;
+		}
+	public:
+		Vec4 pos;
+	};
+public:
+	void BindTransformation(const Mat4& trans_in)
+	{
+		Transformation = trans_in;
 	}
 
-	void BindTranslation(const Vec3& translation_in)
-	{
-		translation = translation_in;
-	}
 
 	Output operator() (const T& in) const
 	{
-		return { in.pos * rotation + translation };
+		auto pt = Vec4(in.pos) * Transformation;
+		return { pt };
 	}
 
 private:
-	Mat3 rotation;
-	Vec3 translation;
+	Mat4 Transformation;
 };
 
