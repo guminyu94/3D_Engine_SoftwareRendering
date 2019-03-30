@@ -75,7 +75,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = 1.0f/4 ;
+	const float dt = 1.0f/30 ;
 	if (wnd.kbd.KeyIsPressed('Q'))
 	{
 		theta_x += 0.2*dTheta * dt;
