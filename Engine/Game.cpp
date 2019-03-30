@@ -33,7 +33,6 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	pl(gfx),
-	pl_2(gfx),
 	box_1(0.1f),
 	//sphere(std::move(Sphere::GetPlain<Vertex>(0.1f,12,24))),
 	Rabbit(std::move(IndexedTriangleList<Vertex>::LoadNormals("suzanne.obj")))
@@ -60,9 +59,7 @@ Game::Game(MainWindow& wnd)
 	//Rabbit.getFaceNorm();
 	offset_z = Rabbit.GetRadius()*2;
 	lz = Rabbit.GetRadius();
-	//theta_z = PI;
-	//sphere.getFaceNorm();
-	//Rabbit.RevNorm();
+
 };
 
 void Game::Go()
@@ -75,185 +72,81 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = 1.0f/30 ;
-	if (wnd.kbd.KeyIsPressed('Q'))
-	{
-		theta_x += 0.2*dTheta * dt;
-	}
+	
+	float dt = 1.0f / 20.0f;
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
-		theta_y += 0.2*dTheta * dt;
-	}
-	if (wnd.kbd.KeyIsPressed('E'))
-	{
-		theta_z += 0.2*dTheta * dt;
+		cam_pos += Vec4{ 0.0f,0.0f,1.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('A'))
 	{
-		theta_x -= 0.2*dTheta * dt;
+		cam_pos += Vec4{ -1.0f,0.0f,0.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('S'))
 	{
-		theta_y -= 0.2*dTheta * dt;
+		cam_pos += Vec4{ 0.0f,0.0f,-1.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
 	if (wnd.kbd.KeyIsPressed('D'))
 	{
-		theta_z -= 0.2*dTheta * dt;
+		cam_pos += Vec4{ 1.0f,0.0f,0.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
-	if (wnd.kbd.KeyIsPressed('F'))
+	if (wnd.kbd.KeyIsPressed('C'))
 	{
-		offset_z +=  0.6*dt;
+		cam_pos += Vec4{ 0.0f,1.0f,0.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
-	if (wnd.kbd.KeyIsPressed('G'))
+	if (wnd.kbd.KeyIsPressed('Z'))
 	{
-		offset_z -= 0.6*dt;
+		cam_pos += Vec4{ 0.0f,-1.0f,0.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
 	}
-	/*if (wnd.kbd.KeyIsPressed('Y'))
+	if (wnd.kbd.KeyIsPressed('Q'))
 	{
-		lt += dTheta*dt;
-		pl.effect.vs.SetLightDirection(lt);
+		cam_rot_inv = cam_rot_inv * Mat4::RotationZ(cam_roll_speed * dt);
 	}
-	if (wnd.kbd.KeyIsPressed('H'))
+	if (wnd.kbd.KeyIsPressed('E'))
 	{
-		lt -= dTheta * dt;
-		pl.effect.vs.SetLightDirection(lt);
+		cam_rot_inv = cam_rot_inv * Mat4::RotationZ(-cam_roll_speed * dt);
 	}
-	if (wnd.kbd.KeyIsPressed('U'))
-	{
-		alv += dt;
-		pl.effect.vs.SetAmbientLight(alv);
-	}
-	if (wnd.kbd.KeyIsPressed('J'))
-	{
-		alv -= dt;
-		pl.effect.vs.SetAmbientLight(alv);
-	}
-	if (wnd.kbd.KeyIsPressed('I'))
-	{
-		dlv += dt;
-		pl.effect.vs.SetAmbientLight(dlv);
-	}
-	if (wnd.kbd.KeyIsPressed('K'))
-	{
-		dlv -= dt;
-		pl.effect.vs.SetAmbientLight(dlv);
-	}
-	*/
-	
-	if (wnd.kbd.KeyIsPressed('J'))
-	{
-		lx += 5*dt;
 
-	}
-	if (wnd.kbd.KeyIsPressed('L'))
+	while (! wnd.mouse.IsEmpty())
 	{
-		lx -= 5*dt;
+		const auto e = wnd.mouse.Read();
+		switch (e.GetType())
+		{
+		case Mouse::Event::Type::LPress:
+			mt.Engage(e.GetPos());
+			break;
+		case Mouse::Event::Type::LRelease:
+			mt.Release();
+			break;
+		case Mouse::Event::Type::Move:
+			if (mt.Engaged())
+			{
+				const auto delta = mt.Move(e.GetPos());
+				cam_rot_inv = cam_rot_inv
+					* Mat4::RotationY((float)-delta.x * htrack)
+					* Mat4::RotationX((float)-delta.y * vtrack);
+			}
+			break;
+		}
 	}
-	if (wnd.kbd.KeyIsPressed('I'))
-	{
-		ly +=5* dt;
-	}
-	if (wnd.kbd.KeyIsPressed('K'))
-	{
-		ly -= 5*dt;
-	}
-	if (wnd.kbd.KeyIsPressed('U'))
-	{
-		lz += 2* dt;
-	}
-	if (wnd.kbd.KeyIsPressed('O'))
-	{
-		lz -= 2*dt;
-	}
-	// debugger output
-	//std::wstring w_string_debug;
-	//std::string string_debug = "Light_Z: " + std::to_string(lz) + " \n" + "\0";
-	//w_string_debug.assign(string_debug.begin(), string_debug.end());
-	//OutputDebugString(w_string_debug.c_str());
 
 }
 
 void Game::ComposeFrame()
 {
 	pl.BeginFrame();
-	const auto proj = Mat4::ProjectionHFOV(100.0f, 1.33333f, 0.5f, 4.0f);
-	Vec4 test({ 0.4,0.1,0.2,1 });
-	auto result = test * proj;
+	const auto proj = Mat4::ProjectionHFOV(hfov, aspect_ratio, 0.5f, 4.0f);
+	const auto view = Mat4::Translation(-cam_pos) * cam_rot_inv;
 	// set up the rot matrix
-	
 	pl.effect.vs.BindWorld(
 		Mat4::RotationX(theta_x) *
 		Mat4::RotationY(theta_y) *
 		Mat4::RotationZ(theta_z) *
 		Mat4::Translation(0.0f, 0.0f, offset_z)
 	);
-	
+	pl.effect.vs.BindView(view);
 	pl.effect.vs.BindProjection(proj);
 	pl.effect.ps.SetLightPosition({ lx,ly,lz });
-	/*
-	// get the line and vertices list
-	IndexedLineList box_1_vl_list = box_1.getLineVertexIndexList();
-	// rot the vertices, z offset, and screen transform
-	for (auto & vec : box_1_vl_list.vertex)
-	{
-		 vec *= rotMat;
-		 vec += {0.0f, 0.0f, offset_z};
-		 s_trans.Transform(vec);
-	}
-
-
-	// draw the lines
-	for (int i = 0; i < (std::end(box_1_vl_list.nodesList) - std::begin(box_1_vl_list.nodesList)) - 1; i = i + 2)
-	{
-		// debugger output
-		std::wstring w_string_debug;
-		std::string string_debug = "Line Index: " + std::to_string(i/2) + " \n" + "\0";
-		w_string_debug.assign(string_debug.begin(), string_debug.end());
-		OutputDebugString(w_string_debug.c_str());
-		// draw the lines
-		gfx.DrawLine(box_1_vl_list.vertex[box_1_vl_list.nodesList[i]], box_1_vl_list.vertex[box_1_vl_list.nodesList[i + 1]], Colors::White);
-	}
-	*/
-
-	/*
-	IndexedTriangleList box_1_vt_list = box_1.getTriangleVertexIndexList();
-	for (auto & vec : box_1_vt_list.verticesXY)
-	{
-		vec *= rotMat;
-		vec += {0.0f, 0.0f, offset_z};
-	}
-	box_1_vt_list.checkCullFace();
-	for (auto & vec : box_1_vt_list.verticesXY)
-	{
-		s_trans.Transform(vec);
-	}
-
-
-	for (int i = 0; i < (std::end(box_1_vt_list.nodesList) - std::begin(box_1_vt_list.nodesList)) - 2; i = i + 3)
-	{
-		// debugger output
-		//std::wstring w_string_debug;
-		//std::string string_debug = "Line Index(Triangle): " + std::to_string(i / 3) + " \n" + "\0";
-		//w_string_debug.assign(string_debug.begin(), string_debug.end());
-		//OutputDebugString(w_string_debug.c_str());
-		// draw the triangle
-		if (box_1_vt_list.cull[i / 3])
-		{
-			gfx.DrawTriangle(box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 1]], box_1_vt_list.verticesXY[box_1_vt_list.nodesList[i + 2]], colors_array[i / 3]);
-		}
-	}
-	*/
-
-	//pl.effect.vs.BindRotation(rotMat);
-	//pl.effect.vs.BindTranslation(tran_vec);
-	//pl.Draw(*box_vertexlist_ptr_1);
-	//pl.Draw(*box_vertexlist_ptr_2);
-	//pl.Draw(Rabbit);
-
-
-	//pl_2.effect.vs.BindTransformation(Mat4::Translation(lx,ly,lz ));
-
-	//pl.Draw(sphere);
+	
 	pl.Draw(Rabbit);
-	//pl_2.Draw(*box_vertexlist_ptr_1);
 }

@@ -72,7 +72,7 @@ private:
 	static LRESULT WINAPI _HandleMsgThunk( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam );
 	LRESULT HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam );
 public:
-	Keyboard kbd;
+	Keyboard wnd.kbd;
 	Mouse mouse;
 private:
 	static constexpr wchar_t* wndClassName = L"Chili DirectX Framework Window";
