@@ -13,6 +13,7 @@
 #include "ObjFileLoader.h"
 #include "DefaultTextureEffect.h"
 #include "MouseTracker.h"
+#include "BoxScene.h"
 
 class Game
 {
@@ -32,11 +33,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	box box_1;
-	Pipeline<EffectHighlight> pl;
-	std::unique_ptr<IndexedTriangleList<Vertex>> box_vertexlist_ptr_1;
-	IndexedTriangleList<Vertex> Rabbit;
-	IndexedTriangleList<Vertex> sphere;
+	Pipeline<EffectLocalLight> pl;
 	static constexpr float dTheta = PI;
 	// fov
 	static constexpr float aspect_ratio = 1.33333f;
@@ -59,5 +56,7 @@ private:
 	Vec3 cam_pos = { 0.0f,0.0f,0.0f };
 	Mat4 cam_rot_inv = Mat4::Identity();
 	MouseTracker mt;
+	// scene
+	BoxScene bScene;
 	/********************************/
 };

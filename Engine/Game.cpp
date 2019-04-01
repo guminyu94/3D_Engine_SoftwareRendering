@@ -32,34 +32,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	pl(gfx),
-	box_1(0.1f),
-	//sphere(std::move(Sphere::GetPlain<Vertex>(0.1f,12,24))),
-	Rabbit(std::move(IndexedTriangleList<Vertex>::LoadNormals("suzanne.obj")))
+	pl(gfx)
 {
-	/*
-	Vec3 v1 = { 0,0,0 };
-	Vec3 v2 = { 1,0,0 };
-	Vec3 v3 = { 0,1,0 };
-	Vec3 tv1 = { 20, 499, 0 };
-	Vec3 tv2 = { 250, 499, 0 };
-	Vec3 tv3 = { 20, 269, 0 };
 	
-	std::vector<Vertex> tri_vert_list;
-	tri_vert_list.push_back({ v1,tv1 });
-	tri_vert_list.push_back({ v2,tv2 });
-	tri_vert_list.push_back({ v3,tv3 });
-	tri_vertexlist_ptr = new IndexedTriangleList<Vertex> (tri_vert_list, {0,1,2}, "aa322ca2a52f3192b09a650e8eb4c8e0_2.jpg");
-	*/
-	box_vertexlist_ptr_1 = box_1.getIndexedTriangleList();
-	//box_vertexlist_ptr_2 = box_2.getIndexedTriangleList();
-	box_vertexlist_ptr_1->getFaceNorm();
-	//box_vertexlist_ptr_2->getFaceNorm();
-	Rabbit.AdjustToTrueCenter();
-	//Rabbit.getFaceNorm();
-	offset_z = Rabbit.GetRadius()*2;
-	lz = Rabbit.GetRadius();
-
 };
 
 void Game::Go()
@@ -146,7 +121,14 @@ void Game::ComposeFrame()
 	);
 	pl.effect.vs.BindView(view);
 	pl.effect.vs.BindProjection(proj);
-	pl.effect.ps.SetLightPosition({ lx,ly,lz });
+
+	// set up point light
+	const Vec4 lp{ lx,ly,lz,0 };
+	pl.effect.ps.SetLightPosition(lp * view);
 	
-	pl.Draw(Rabbit);
+	for (unsigned int i = 0; i < bScene.objList.size(); i++)
+	{
+		pl.Draw(bScene.objList[i]);
+	}
+	
 }

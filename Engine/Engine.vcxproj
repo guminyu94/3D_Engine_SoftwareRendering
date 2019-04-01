@@ -88,12 +88,13 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>C:\Program Files\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link />
     <Link>
       <AdditionalDependencies>libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -107,11 +108,12 @@
       <CallingConvention>VectorCall</CallingConvention>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\Program Files\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -159,11 +161,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="box.h" />
+    <ClInclude Include="BoxScene.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="CImg.h" />
     <ClInclude Include="DefaultGeometryShader.h" />
-    <ClInclude Include="DefaultTextureEffect.h" />
-    <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="JPG2Vector.h" />
     <ClInclude Include="Mat.h" />
     <ClInclude Include="Miniball.h" />
@@ -172,13 +173,11 @@
     <ClInclude Include="ObjFileLoader.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="TextureEffect.h" />
-    <ClInclude Include="TextureEffectHightlight.h" />
+    <ClInclude Include="TextureEffectPixelShader.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vec4.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VertexFlatEffect.h" />
     <ClInclude Include="VertexIndexList.h" />
     <ClInclude Include="FrameMath.h" />
     <ClInclude Include="ChiliWin.h" />
@@ -196,8 +195,8 @@
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
-    <ClInclude Include="VertexSmoothingPointLightShader.h" />
-    <ClInclude Include="VertexSmoothingShader.h" />
+    <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WallWithColor.h" />
     <ClInclude Include="Zbuffer.h" />
   </ItemGroup>
   <ItemGroup>

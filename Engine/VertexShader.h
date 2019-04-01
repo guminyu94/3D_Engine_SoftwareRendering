@@ -8,7 +8,7 @@
 #include "Vertex.h"
 #include <algorithm>
 
-class VertexSmoothingPointEffect
+class VertexShader
 {
 public:
 	class Output
@@ -111,7 +111,7 @@ public:
 	{
 		const auto p4 = Vec4(v.pos);
 		const auto newpos = p4 * worldViewProj;
-		return { newpos,Vec4{ v.n,0.0f } *world,p4 * world };
+		return { newpos,Vec4{ v.n,0.0f } *world*view,p4 * world };
 	}
 
 

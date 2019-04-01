@@ -287,8 +287,8 @@ public:
 		return tl;
 	}
 
-
 	std::vector<T> vertices;
 	std::vector<unsigned int> indices;
 	JPG2Vector tex_img;
+	Vec3 texColor;
 };

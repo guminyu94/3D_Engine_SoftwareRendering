@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Obj">
       <UniqueIdentifier>{93f2b1a4-51cf-4160-8066-3a6e6c536748}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{aa73e380-10c1-4b28-8b66-20470ce1a1fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -93,19 +96,10 @@
     <ClInclude Include="VertexIndexList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VertexFlatEffect.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultGeometryShader.h">
       <Filter>Header Files\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultVertexShader.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenTransform.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureEffect.h">
       <Filter>Header Files\Effect</Filter>
     </ClInclude>
     <ClInclude Include="box.h">
@@ -123,18 +117,6 @@
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="VertexSmoothingShader.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexSmoothingPointLightShader.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureEffectHightlight.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultTextureEffect.h">
-      <Filter>Header Files\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Mat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -146,6 +128,18 @@
     </ClInclude>
     <ClInclude Include="MouseTracker.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureEffectPixelShader.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="WallWithColor.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

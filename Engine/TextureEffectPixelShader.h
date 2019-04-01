@@ -5,13 +5,13 @@
 #include "JPG2Vector.h"
 #include "Vertex.h"
 #include "DefaultGeometryShader.h"
-#include "VertexSmoothingPointLightShader.h"
+#include "VertexShader.h"
 
-class EffectHighlight
+class EffectLocalLight
 {
 public:
 	// typedef DefaultVertexShader<Vertex> VertexShader;
-	typedef VertexSmoothingPointEffect VertexShader;
+	typedef VertexShader VertexShader;
 	typedef DefaultGeometryShader<VertexShader::Output> GeometryShader;
 public:
 	class PixelShader
@@ -37,8 +37,18 @@ public:
 			const auto r = w * 2.0f - v_to_l;
 			// calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
 			const auto s = light_diffuse * specular_intensity * std::pow(std::max(0.0f, -r.GetNormalized() * in.worldPos.GetNormalized()), specular_power);
-			// add diffuse+ambient, filter by material color, saturate and scale
-			return Color(material_color.GetHadamard(d + light_ambient + s).Saturate() * 255.0f);
+			if (textureOrMaterial == false)
+			{
+				Color pc = tex_img_ptr->getPix((int)(in.t.x), (int)(in.t.y));
+				return Color(pc.GetHadamard(Vec3(pc) + light_ambient + s).Saturate() * 255.0f);
+			}
+
+			else
+			{
+				// add diffuse+ambient, filter by material color, saturate and scale
+				return Color(material_color.GetHadamard(d + light_ambient + s).Saturate() * 255.0f);
+			}
+
 		}
 		void SetDiffuseLight(const Vec3& c)
 		{
@@ -48,13 +58,17 @@ public:
 		{
 			light_ambient = c;
 		}
-		void SetLightPosition(const Vec3& pos_in)
+		void SetLightPosition(const Vec4& pos_in)
 		{
 			light_pos = pos_in;
 		}
 		void loadTex(JPG2Vector *  _tex_img_ptr)
 		{
 			tex_img_ptr = _tex_img_ptr;
+		}
+		void SetMaterial(Vec3 c)
+		{
+			material_color = c;
 		}
 	private:
 		Vec3 light_pos = { 0.0f,0.0f,0.5f };
@@ -70,7 +84,7 @@ public:
 		float specular_intensity = 0.6f;
 	private:
 		JPG2Vector * tex_img_ptr;
-
+		bool textureOrMaterial = false;
 	};
 public:
 	PixelShader ps;

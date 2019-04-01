@@ -44,3 +44,9 @@ inline auto slope(const T& x1, const T& y1, const T& x2, const T& y2)
 	T slope = (y2 - y1) / (x2 - x1);;
 	return slope;
 }
+
+template<typename T>
+constexpr T to_rad(T deg)
+{
+	return deg * PI / (T)180.0;
+}

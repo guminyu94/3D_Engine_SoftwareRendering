@@ -7,7 +7,7 @@
 #include "NDCScreenTransformer.h"
 #include "Mat.h"
 #include <algorithm>
-#include "TextureEffectHightlight.h"
+#include "TextureEffectPixelShader.h"
 #include "Vertex.h"
 #include "Zbuffer.h"
 #include <algorithm>
@@ -40,7 +40,16 @@ public:
 
 	void Draw(IndexedTriangleList<Vertex>& triList)
 	{
-		effect.ps.loadTex(&(triList.tex_img));
+		if (texOrMat == false)
+		{
+			effect.ps.textureOrMaterial = false;
+			effect.ps.loadTex(&(triList.tex_img));
+		}
+		else
+		{
+			effect.ps.textureOrMaterial = true;
+			effect.ps.setMaterial(triList.texColor);
+		}
 		ProcessVertices(triList.vertices, triList.indices);
 	}
 
@@ -321,9 +330,10 @@ private:
 						//cur_point *= cur_point_z;
 						//cur_point.t.x *= cur_point_z;
 						//cur_point.t.y *= cur_point_z;
-						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
+
+					
 						gfx.PutPixel((int)(j), (int)(i), effect.ps(point));
-						//gfx.PutPixel((int)(j), (int)(i), Colors::White);
+		
 					}
 
 				}
@@ -366,6 +376,7 @@ private:
 						//cur_point.t.x *= cur_point_z;
 						//cur_point.t.y *= cur_point_z;
 						//gfx.PutPixel((int)(j), (int)(i), effect.ps((int)(cur_point.t.x), (int)(cur_point.t.y)));
+						
 						gfx.PutPixel((int)(j), (int)(i), effect.ps(point));
 						//gfx.PutPixel((int)(j), (int)(i),Colors::White);
 
@@ -387,5 +398,4 @@ private:
 	JPG2Vector * tex_img_ptr;
 	Zbuffer zb;
 	unsigned int triangle_index;
-	Color Light_c ;
 };

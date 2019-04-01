@@ -10,18 +10,18 @@
 class box
 {
 public:
-	box(const float & _length,const std::string & filename,const float & _z_offset):
+	box(const float & _length,const std::string & filename,const float & _x_offset,const float & _y_offset,const float & _z_offset):
 		length(_length),
 		tex_img_filename(filename)
 	{
-		verticesXY.emplace_back(-length / 2,-length / 2,length / 2+ _z_offset);
-		verticesXY.emplace_back(length / 2, -length / 2, length / 2+ _z_offset);
-		verticesXY.emplace_back(length / 2, -length / 2, -length / 2+ _z_offset);
-		verticesXY.emplace_back(-length / 2, -length / 2, -length / 2+ _z_offset);
-		verticesXY.emplace_back(length / 2, length / 2, length / 2+ _z_offset);
-		verticesXY.emplace_back(length / 2, length / 2, -length / 2+ _z_offset);
-		verticesXY.emplace_back(-length / 2, length / 2, -length / 2+ _z_offset);
-		verticesXY.emplace_back(-length / 2, length / 2, length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2 + _x_offset,-length / 2 + _y_offset,length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2 + _x_offset, -length / 2 + _y_offset, length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2 + _x_offset, -length / 2 + _y_offset, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2 + _x_offset, -length / 2 + _y_offset, -length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2 + _x_offset, length / 2 + _y_offset, length / 2+ _z_offset);
+		verticesXY.emplace_back(length / 2 + _x_offset, length / 2 + _y_offset, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2 + _x_offset, length / 2 + _y_offset, -length / 2+ _z_offset);
+		verticesXY.emplace_back(-length / 2 + _x_offset, length / 2 + _y_offset, length / 2+ _z_offset);
 		
 		//0,1,4,0,4,7
 		verticesUV.emplace_back(20, 500, 0);
