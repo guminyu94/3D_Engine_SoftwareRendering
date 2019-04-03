@@ -44,13 +44,14 @@ public:
 		{
 			effect.ps.textureOrMaterial = false;
 			effect.ps.loadTex(&(triList.tex_img));
+			ProcessVertices(triList.vertices, triList.indices);
 		}
 		else
 		{
 			effect.ps.textureOrMaterial = true;
-			effect.ps.setMaterial(triList.texColor);
+			effect.ps.SetMaterial(triList.texColor);
+			ProcessVertices(triList.vertices, triList.indices);
 		}
-		ProcessVertices(triList.vertices, triList.indices);
 	}
 
 
@@ -109,7 +110,7 @@ private:
 
 	void ClipCullTriangle(Triangle<GSout>& t)
 	{
-	/*
+	
 		// cull tests
 		if (abs(t.v0.pos.x / t.v0.pos.w) > 1.0f  &&
 			abs(t.v1.pos.x / t.v1.pos.w) > 1.0f &&
@@ -201,9 +202,9 @@ private:
 		{
 			PostProcessTriangleVertices(t);
 		}
-		*/
 		
-		PostProcessTriangleVertices(t);
+		
+		//PostProcessTriangleVertices(t);
 	}
 
 	// vertex post-processing function
@@ -307,7 +308,7 @@ private:
 		{
 			int start = ceil(v1.pos.y);
 			int end = floor(v2.pos.y);
-			for (float i = std::max(start,0); i <= std::min(end, (int)(Graphics::ScreenHeight - 1)); i++)
+			for (int i = std::max(start,0); i <= std::min(end, (int)(Graphics::ScreenHeight - 1)); i++)
 			{
 
 				GSout point1 = (v2 - v1)*((i - v1.pos.y) / (v2.pos.y - v1.pos.y)) + v1;
@@ -352,7 +353,7 @@ private:
 		{
 			int start = floor(v3.pos.y);
 			int end = ceil(v1.pos.y);
-			for (float i = std::min((int)(Graphics::ScreenHeight - 1), start); i >= std::max(0, end); i--)
+			for (int i = std::min((int)(Graphics::ScreenHeight - 1), start); i >= std::max(0, end); i--)
 			{
 
 				GSout point1 = (v1 - v3)* ((i - v3.pos.y) / (v1.pos.y - v3.pos.y)) + v3;
@@ -392,6 +393,7 @@ private:
 
 public:
 	Effect effect;
+	bool texOrMat;
 private:
 	Graphics& gfx;
 	NDCScreenTransformer<GSout> pst;

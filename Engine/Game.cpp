@@ -34,7 +34,9 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	pl(gfx)
 {
-	
+	cam_pos = Vec4{ 0.0f,0.5f,5.0f,0.0f };
+	cam_rot_inv = Mat4::RotationY(PI);
+
 };
 
 void Game::Go()
@@ -49,6 +51,8 @@ void Game::UpdateModel()
 {
 	
 	float dt = 1.0f / 20.0f;
+
+	// camera control
 	if (wnd.kbd.KeyIsPressed('W'))
 	{
 		cam_pos += Vec4{ 0.0f,0.0f,1.0f,0.0f } *!cam_rot_inv * cam_speed * dt;
@@ -105,12 +109,38 @@ void Game::UpdateModel()
 		}
 	}
 
+	// light control
+	if (wnd.kbd.KeyIsPressed('U'))
+	{
+		ly += dt;
+	}
+	if (wnd.kbd.KeyIsPressed('J'))
+	{
+		ly -= dt;
+	}
+	if (wnd.kbd.KeyIsPressed('H'))
+	{
+		lx += dt;
+	}
+	if (wnd.kbd.KeyIsPressed('K'))
+	{
+		lx -= dt;
+	}
+	if (wnd.kbd.KeyIsPressed('Y'))
+	{
+		lz += dt;
+	}
+	if (wnd.kbd.KeyIsPressed('I'))
+	{
+		lz -= dt;
+	}
+	
 }
 
 void Game::ComposeFrame()
 {
 	pl.BeginFrame();
-	const auto proj = Mat4::ProjectionHFOV(hfov, aspect_ratio, 0.5f, 4.0f);
+	const auto proj = Mat4::ProjectionHFOV(hfov, aspect_ratio, 0.5f, 20.0f);
 	const auto view = Mat4::Translation(-cam_pos) * cam_rot_inv;
 	// set up the rot matrix
 	pl.effect.vs.BindWorld(
@@ -119,15 +149,17 @@ void Game::ComposeFrame()
 		Mat4::RotationZ(theta_z) *
 		Mat4::Translation(0.0f, 0.0f, offset_z)
 	);
+
+	// update light
 	pl.effect.vs.BindView(view);
 	pl.effect.vs.BindProjection(proj);
-
-	// set up point light
-	const Vec4 lp{ lx,ly,lz,0 };
+	Vec4 lp{ lx,ly,lz,0 };
 	pl.effect.ps.SetLightPosition(lp * view);
-	
+
+	// draw the obj list
 	for (unsigned int i = 0; i < bScene.objList.size(); i++)
 	{
+		pl.texOrMat = bScene.isTexOrMat[i];
 		pl.Draw(bScene.objList[i]);
 	}
 	

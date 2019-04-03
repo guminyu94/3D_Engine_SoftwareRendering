@@ -11,7 +11,6 @@
 #include "FrameMath.h"
 #include "Pipeline.h"
 #include "ObjFileLoader.h"
-#include "DefaultTextureEffect.h"
 #include "MouseTracker.h"
 #include "BoxScene.h"
 
@@ -43,11 +42,11 @@ private:
 	float theta_x = 0.0f;
 	float theta_y = 0.0f;
 	float theta_z = 0.0f;
-	float offset_z = 3.0f;
+	float offset_z = 0.5f;
 	// light
 	float lx = 0.0f;
-	float ly = 0.0f;
-	float lz = 0.5f;
+	float ly = 0.5f;
+	float lz = 0.6f;
 	// camera
 	static constexpr float htrack = to_rad(hfov) / (float)Graphics::ScreenWidth;
 	static constexpr float vtrack = to_rad(vfov) / (float)Graphics::ScreenHeight;

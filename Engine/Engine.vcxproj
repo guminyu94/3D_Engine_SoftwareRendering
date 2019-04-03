@@ -70,12 +70,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <LibraryPath>C:\Users\gumin\source\repos\Engine_TEST1\Engine\jpeg-9c;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\gumin\source\repos\Engine_TEST1\Engine\jpeg-9c;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\gumin\source\repos\Engine_TEST1\Engine\jpeg-9c;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\gumin\source\repos\Engine_TEST1\Engine\jpeg-9c;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,7 +100,7 @@
     <Link />
     <Link>
       <AdditionalDependencies>libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,7 +119,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,13 +135,14 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,13 +157,14 @@
       <CallingConvention>VectorCall</CallingConvention>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0;C:\Users\gumin\Documents\Cpp_Libs\jpeg-9c;C:\Users\gumin\Documents\Cpp_Libs\boost_1_67_0</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libjpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -213,7 +221,6 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Surface.cpp" />
-    <ClCompile Include="TextureEffect.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vec3.cpp" />

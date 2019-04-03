@@ -39,8 +39,9 @@ public:
 			const auto s = light_diffuse * specular_intensity * std::pow(std::max(0.0f, -r.GetNormalized() * in.worldPos.GetNormalized()), specular_power);
 			if (textureOrMaterial == false)
 			{
-				Color pc = tex_img_ptr->getPix((int)(in.t.x), (int)(in.t.y));
-				return Color(pc.GetHadamard(Vec3(pc) + light_ambient + s).Saturate() * 255.0f);
+				auto pc = Vec3(tex_img_ptr->getPix((int)(in.t.x), (int)(in.t.y)))/255.0f;
+				//return Color(pc);
+				return Color(pc.GetHadamard(d + light_ambient ).Saturate() * 255.0f);
 			}
 
 			else
@@ -76,13 +77,13 @@ public:
 		Vec3 light_ambient = { 0.1f,0.1f,0.1f };
 		Vec3 material_color = { 0.8f,0.85f,1.0f };
 		// diffuse
-		float linear_attenuation = 1.0f;
-		float quadradic_attenuation = 2.619f;
-		float constant_attenuation = 0.382f;
+		float linear_attenuation = 0.2f;
+		float quadradic_attenuation = 0.619f;
+		float constant_attenuation = 0.082f;
 		// specular
-		float specular_power = 30.0f;
-		float specular_intensity = 0.6f;
-	private:
+		float specular_power = 40.0f;
+		float specular_intensity = 1.5f;
+	public:
 		JPG2Vector * tex_img_ptr;
 		bool textureOrMaterial = false;
 	};
