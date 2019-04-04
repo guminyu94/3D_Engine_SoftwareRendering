@@ -394,10 +394,10 @@ private:
 public:
 	Effect effect;
 	bool texOrMat;
+	Zbuffer zb;
 private:
 	Graphics& gfx;
 	NDCScreenTransformer<GSout> pst;
 	JPG2Vector * tex_img_ptr;
-	Zbuffer zb;
 	unsigned int triangle_index;
 };

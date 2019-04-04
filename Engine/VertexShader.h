@@ -22,29 +22,36 @@ public:
 			pos(pos)
 		{}
 		
-		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldPos)
+		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldView)
 			:
 			pos(src_pos),
 			n(src_norm),
-			worldPos(src_worldPos)
+			worldView(src_worldView)
 		{}
 
-		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldPos, const Vec2& src_t)
+		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldView, const Vec2& src_t)
 			:
 			pos(src_pos),
 			n(src_norm),
-			worldPos(src_worldPos),
+			worldView(src_worldView),
 			t(src_t)
 		{}
 
-
+		Output(const Vec4& src_pos, const Vec3& src_norm, const Vec3& src_worldView, const Vec2& src_t, const Vec3& src_world)
+			:
+			pos(src_pos),
+			n(src_norm),
+			worldView(src_worldView),
+			t(src_t),
+			world(src_world)
+		{}
 
 		// math operators
 		Output& operator+=(const Output& rhs)
 		{
 			pos += rhs.pos;
 			n += rhs.n;
-			worldPos += rhs.worldPos;
+			worldView += rhs.worldView;
 			t += rhs.t;
 			color += rhs.color;
 			return *this;
@@ -57,7 +64,7 @@ public:
 		{
 			pos -= rhs.pos;
 			n -= rhs.n;
-			worldPos -= rhs.worldPos;
+			worldView -= rhs.worldView;
 			t -= rhs.t;
 			color -= rhs.color;
 			return *this;
@@ -69,7 +76,7 @@ public:
 		Output& operator*=(float rhs)
 		{
 			pos *= rhs;
-			worldPos *= rhs;
+			worldView *= rhs;
 			n *= rhs;
 			t *= rhs;
 			color *= rhs;
@@ -83,7 +90,7 @@ public:
 		{
 			pos /= rhs;
 			n /= rhs;
-			worldPos /= rhs;
+			worldView /= rhs;
 			t /= rhs;
 			color /= rhs;
 			return *this;
@@ -95,9 +102,10 @@ public:
 	public:
 		Vec4 pos;
 		Vec3 n;
-		Vec3 worldPos;
+		Vec3 worldView;
 		Vec2 t;
 		Vec3 color;
+		Vec3 world;
 	};
 public:
 
@@ -124,7 +132,7 @@ public:
 	{
 		const auto p4 = Vec4(v.pos);
 		const auto newpos = p4 * worldViewProj;
-		return { newpos,Vec4{ v.n,0.0f } *world*view,p4 * world*view,v.t};
+		return { newpos,Vec4{ v.n,0.0f } *world*view,p4 * world*view,v.t,p4*world};
 	}
 
 

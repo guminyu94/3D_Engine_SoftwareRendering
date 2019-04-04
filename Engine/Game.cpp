@@ -156,6 +156,8 @@ void Game::ComposeFrame()
 	Vec4 lp{ lx,ly,lz,0 };
 	pl.effect.ps.SetLightPosition(lp * view);
 
+	auto zb_l = pl.zb;
+	   	 
 	// draw the obj list
 	for (unsigned int i = 0; i < bScene.objList.size(); i++)
 	{
@@ -163,4 +165,32 @@ void Game::ComposeFrame()
 		pl.Draw(bScene.objList[i]);
 	}
 	
+	// copy a light z buffer
+	auto zb_l(pl.zb);
+
+
+	// change the view back to the camera
+	pl.BeginFrame();
+	const auto view = Mat4::Translation(-cam_pos) * cam_rot_inv;
+	// set up the rot matrix
+	pl.effect.vs.BindWorld(
+		Mat4::RotationX(theta_x) *
+		Mat4::RotationY(theta_y) *
+		Mat4::RotationZ(theta_z) *
+		Mat4::Translation(0.0f, 0.0f, offset_z)
+	);
+
+	// update light
+	pl.effect.vs.BindView(view);
+	pl.effect.vs.BindProjection(proj);
+	Vec4 lp{ lx,ly,lz,0 };
+	pl.effect.ps.SetLightPosition(lp * view);
+
+	// draw the obj list
+	for (unsigned int i = 0; i < bScene.objList.size(); i++)
+	{
+		pl.texOrMat = bScene.isTexOrMat[i];
+		pl.Draw(bScene.objList[i]);
+	}
+
 }

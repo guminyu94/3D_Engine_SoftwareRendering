@@ -24,7 +24,7 @@ public:
 			// re-normalize interpolated surface normal
 			const auto surf_norm = in.n.GetNormalized();
 			// vertex to light data
-			const auto v_to_l = light_pos - in.worldPos;
+			const auto v_to_l = light_pos - in.worldView;
 			const auto dist = v_to_l.Len();
 			const auto dir = v_to_l / dist;
 			// calculate attenuation
@@ -36,7 +36,7 @@ public:
 			const auto w = surf_norm * (v_to_l * surf_norm);
 			const auto r = w * 2.0f - v_to_l;
 			// calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-			const auto s = light_diffuse * specular_intensity * std::pow(std::max(0.0f, -r.GetNormalized() * in.worldPos.GetNormalized()), specular_power);
+			const auto s = light_diffuse * specular_intensity * std::pow(std::max(0.0f, -r.GetNormalized() * in.worldView.GetNormalized()), specular_power);
 			if (textureOrMaterial == false)
 			{
 				auto pc = Vec3(tex_img_ptr->getPix((int)(in.t.x), (int)(in.t.y)))/255.0f;

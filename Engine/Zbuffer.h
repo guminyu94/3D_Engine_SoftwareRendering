@@ -16,7 +16,16 @@ public:
 		pbuffer = nullptr;
 	}
 
-	Zbuffer(const Zbuffer&) = delete;
+	Zbuffer(const Zbuffer& in)
+	{
+		width = in.width;
+		height = in.height;
+		pbuffer = new float[width*height];
+		for (unsigned int i = 0; i < width*height;i++)
+		{
+			pbuffer[i] = in.pbuffer[i];
+		}
+	};
 
 	Zbuffer & operator = (const Zbuffer &) = delete;
 
@@ -49,7 +58,7 @@ public:
 		return false;
 	}
 
-private:
+public:
 	int width;
 	int height;
 	float* pbuffer = nullptr;
